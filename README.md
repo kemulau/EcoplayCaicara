@@ -1,6 +1,6 @@
 # Ecoplay Caiçara
 
-Ecoplay Caiçara é um aplicativo Flutter focado em educação ambiental e acessibilidade. O projeto inclui telas de cadastro de jogador e uma home com cartões para diferentes jogos temáticos.
+Ecoplay Caiçara é um aplicativo Flutter focado em educação ambiental e acessibilidade. O projeto atualmente inclui telas de cadastro de jogador e uma home com cartões para diferentes jogos temáticos.
 
 ## Estrutura do projeto
 
@@ -52,4 +52,4 @@ Contribuições são bem-vindas! Sinta-se livre para abrir _issues_ ou enviar _p
 
 ## Licença
 
-Este projeto não possui uma licença definida. Verifique com os autores antes de utilizar em produção.
+Este projeto não possui uma licença definida.
