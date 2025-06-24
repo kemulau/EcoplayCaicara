@@ -29,3 +29,5 @@ flutter:
   - lib/assets/images/
   - lib/assets/avatares/
   - lib/assets/cards/
+  - lib/assets/games/toca-do-caranguejo/background.png
+  - lib/assets/games/toca-do-caranguejo/caranguejo.png

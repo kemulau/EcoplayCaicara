@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../widgets/pixel_button.dart';
+import 'home.dart';
+import 'login.dart';
 
 class CadastroJogadorScreen extends StatefulWidget {
   const CadastroJogadorScreen({super.key});
@@ -145,7 +147,6 @@ class _CadastroJogadorScreenState extends State<CadastroJogadorScreen> {
                                   },
                                 ),
                                 const SizedBox(height: 20),
-
                                 Text('Escolha seu Avatar:', style: theme.textTheme.bodyMedium),
                                 const SizedBox(height: 10),
                                 Center(
@@ -194,7 +195,6 @@ class _CadastroJogadorScreenState extends State<CadastroJogadorScreen> {
                                     ],
                                   ),
                                 ),
-
                                 const SizedBox(height: 20),
                                 Tooltip(
                                   message: 'Clique para mostrar opções de acessibilidade',
@@ -204,7 +204,6 @@ class _CadastroJogadorScreenState extends State<CadastroJogadorScreen> {
                                     onChanged: (v) => setState(() => mostrarAcessibilidade = v),
                                   ),
                                 ),
-
                                 if (mostrarAcessibilidade) ...[
                                   _buildSwitch('Texto com Alto Contraste', theme, textoAltoContraste, (v) => setState(() => textoAltoContraste = v)),
                                   _buildSwitch('Texto Grande', theme, textoGrande, (v) => setState(() => textoGrande = v)),
@@ -213,7 +212,6 @@ class _CadastroJogadorScreenState extends State<CadastroJogadorScreen> {
                                   _buildSwitch('Leitor de Tela', theme, leituraTela, (v) => setState(() => leituraTela = v)),
                                   _buildSwitch('Redução de Movimento', theme, reducaoMovimento, (v) => setState(() => reducaoMovimento = v)),
                                   _buildSwitch('Teclado Adaptado', theme, tecladoAdaptado, (v) => setState(() => tecladoAdaptado = v)),
-
                                   const SizedBox(height: 20),
                                   _buildDropdown(
                                     'Modo Daltonismo',
@@ -230,7 +228,6 @@ class _CadastroJogadorScreenState extends State<CadastroJogadorScreen> {
                                     (val) => setState(() => fonteDyslexiaSelecionada = val ?? 'Nenhum'),
                                   ),
                                 ],
-
                                 const SizedBox(height: 30),
                                 Center(
                                   child: PixelButton(
@@ -250,6 +247,24 @@ class _CadastroJogadorScreenState extends State<CadastroJogadorScreen> {
                                     label: 'Cadastrar',
                                     width: 220,
                                     height: 60,
+                                  ),
+                                ),
+                                const SizedBox(height: 16),
+                                Center(
+                                  child: TextButton(
+                                    onPressed: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(builder: (_) => const LoginScreen()),
+                                      );
+                                    },
+                                    child: Text(
+                                      'Já tem conta? Entrar',
+                                      style: theme.textTheme.bodyMedium?.copyWith(
+                                        decoration: TextDecoration.underline,
+                                        color: theme.primaryColorDark,
+                                      ),
+                                    ),
                                   ),
                                 ),
                               ],

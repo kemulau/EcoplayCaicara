@@ -1,24 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'screens/cadastro.dart';
+import 'screens/games/toca-do-caranguejo/start.dart';
 import 'theme/retro.dart';
 
+
 void main() {
-  runApp(const EcoplayCaicaraCadastroApp());
+  runApp(const EcoplayCaicaraApp());
 }
 
-class EcoplayCaicaraCadastroApp extends StatelessWidget {
-  const EcoplayCaicaraCadastroApp({super.key});
+class EcoplayCaicaraApp extends StatelessWidget {
+  const EcoplayCaicaraApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Ecoplay Caiçara - Cadastro',
+      title: 'Ecoplay Caiçara',
       debugShowCheckedModeBanner: false,
       theme: retroGameTheme.copyWith(
         textTheme: GoogleFonts.pressStart2pTextTheme(),
       ),
-      home: const CadastroJogadorScreen(),
+      home: const TocaStartScreen(), // ← abre direto o jogo
     );
   }
 }
+
