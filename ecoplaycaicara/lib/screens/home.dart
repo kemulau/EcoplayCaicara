@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'games/toca-do-caranguejo/start.dart';
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
@@ -63,6 +64,7 @@ class HomeScreen extends StatelessWidget {
                       children: cards.map((card) {
                         return GameCard(
                           imagePath: card['image']!,
+                          title: card['title']!,
                           molduraPath: 'lib/assets/cards/moldura.png',
                           width: cardWidth,
                           height: cardHeight,
@@ -84,12 +86,14 @@ class HomeScreen extends StatelessWidget {
 class GameCard extends StatefulWidget {
   final String imagePath;
   final String molduraPath;
+  final String title;
   final double width;
   final double height;
 
   const GameCard({
     super.key,
     required this.imagePath,
+    required this.title,
     required this.molduraPath,
     required this.width,
     required this.height,
@@ -116,15 +120,22 @@ class _GameCardState extends State<GameCard>
       onExit: (_) => _onHover(false),
       child: GestureDetector(
         onTap: () {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(
-                'Abrindo: ${widget.imagePath.split('/').last.replaceAll('.jpg', '')}',
-                style: const TextStyle(fontFamily: 'monospace'),
+          if (widget.title == 'Toca do Caranguejo') {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (_) => const TocaStartScreen()),
+            );
+          } else {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(
+                  'Em breve: ${widget.title}',
+                  style: const TextStyle(fontFamily: 'monospace'),
+                ),
+                duration: const Duration(seconds: 2),
               ),
-              duration: const Duration(seconds: 2),
-            ),
-          );
+            );
+          }
         },
         child: AnimatedScale(
           scale: _scale,
