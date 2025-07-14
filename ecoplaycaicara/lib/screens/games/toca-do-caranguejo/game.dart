@@ -17,6 +17,9 @@ class _TocaGameScreenState extends State<TocaGameScreen> {
   bool mostrarPopup = false;
   int popupIndex = 0;
   Offset caranguejoPosition = Offset.zero;
+  bool caranguejoPequeno = false;
+  bool mostrarAcaoPopup = false;
+  String mensagemAcao = '';
 
   final List<Offset> tocas = [
     const Offset(140, 760),
@@ -51,6 +54,7 @@ class _TocaGameScreenState extends State<TocaGameScreen> {
     super.initState();
 
     caranguejoPosition = tocas[Random().nextInt(tocas.length)];
+    caranguejoPequeno = Random().nextBool();
 
     cronometro = Timer.periodic(const Duration(seconds: 1), (timer) {
       setState(() {
@@ -79,6 +83,7 @@ class _TocaGameScreenState extends State<TocaGameScreen> {
       if (tempoRestante > 0) {
         setState(() {
           caranguejoPosition = tocas[Random().nextInt(tocas.length)];
+          caranguejoPequeno = Random().nextBool();
         });
       }
     });
@@ -86,8 +91,19 @@ class _TocaGameScreenState extends State<TocaGameScreen> {
 
   void _clicouNoCaranguejo() {
     setState(() {
-      pontuacao++;
+      if (caranguejoPequeno) {
+        pontuacao -= 20;
+        mensagemAcao = '⚠️ Capturar caranguejo jovem prejudica o ciclo do mangue!';
+      } else {
+        pontuacao += 15;
+        mensagemAcao = '✅ Proteger o ciclo reprodutivo mantém o mangue vivo!';
+      }
+      mostrarAcaoPopup = true;
       caranguejoPosition = tocas[Random().nextInt(tocas.length)];
+      caranguejoPequeno = Random().nextBool();
+    });
+    Future.delayed(const Duration(seconds: 4), () {
+      if (mounted) setState(() => mostrarAcaoPopup = false);
     });
   }
 
@@ -139,7 +155,7 @@ class _TocaGameScreenState extends State<TocaGameScreen> {
                 onTap: _clicouNoCaranguejo,
                 child: Image.asset(
                   'lib/assets/games/toca-do-caranguejo/caranguejo.png',
-                  width: 80,
+                  width: caranguejoPequeno ? 50 : 80,
                 ),
               ),
             ),
@@ -147,6 +163,11 @@ class _TocaGameScreenState extends State<TocaGameScreen> {
           if (mostrarPopup && tempoRestante > 0)
             Center(
               child: _popupMensagem(mensagens[popupIndex]),
+            ),
+
+          if (mostrarAcaoPopup && tempoRestante > 0)
+            Center(
+              child: _popupMensagem(mensagemAcao),
             ),
 
           if (tempoRestante <= 0)
