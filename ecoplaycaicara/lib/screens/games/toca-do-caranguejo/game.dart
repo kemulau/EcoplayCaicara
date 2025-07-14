@@ -4,6 +4,34 @@ import 'package:flutter/material.dart';
 import '../../../widgets/pixel_button.dart';
 import 'start.dart';
 
+/// Percentuais das posições das tocas em relação
+/// à largura e altura da tela base (1536x1024).
+const _tocasPercentuais = <Offset>[
+  Offset(0.091, 0.742),
+  Offset(0.176, 0.713),
+  Offset(0.260, 0.693),
+  Offset(0.345, 0.684),
+  Offset(0.430, 0.693),
+  Offset(0.514, 0.713),
+  Offset(0.599, 0.732),
+  Offset(0.684, 0.752),
+  Offset(0.130, 0.840),
+  Offset(0.221, 0.820),
+  Offset(0.312, 0.811),
+  Offset(0.404, 0.811),
+  Offset(0.495, 0.820),
+  Offset(0.586, 0.840),
+  Offset(0.677, 0.859),
+];
+
+/// Gera as coordenadas das tocas de acordo com o
+/// tamanho da tela.
+List<Offset> gerarTocas(Size size) {
+  return _tocasPercentuais
+      .map((p) => Offset(p.dx * size.width, p.dy * size.height))
+      .toList();
+}
+
 class TocaGameScreen extends StatefulWidget {
   const TocaGameScreen({super.key});
 
@@ -21,23 +49,7 @@ class _TocaGameScreenState extends State<TocaGameScreen> {
   bool mostrarAcaoPopup = false;
   String mensagemAcao = '';
 
-  final List<Offset> tocas = [
-    const Offset(140, 760),
-    const Offset(270, 730),
-    const Offset(400, 710),
-    const Offset(530, 700),
-    const Offset(660, 710),
-    const Offset(790, 730),
-    const Offset(920, 750),
-    const Offset(1050, 770),
-    const Offset(200, 860),
-    const Offset(340, 840),
-    const Offset(480, 830),
-    const Offset(620, 830),
-    const Offset(760, 840),
-    const Offset(900, 860),
-    const Offset(1040, 880),
-  ];
+  List<Offset> tocas = [];
 
   final List<String> mensagens = [
     '🦀 Os caranguejos ajudam a manter o solo do mangue saudável!',
@@ -53,39 +65,46 @@ class _TocaGameScreenState extends State<TocaGameScreen> {
   void initState() {
     super.initState();
 
-    caranguejoPosition = tocas[Random().nextInt(tocas.length)];
-    caranguejoPequeno = Random().nextBool();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final size = MediaQuery.of(context).size;
+      tocas = gerarTocas(size);
 
-    cronometro = Timer.periodic(const Duration(seconds: 1), (timer) {
       setState(() {
-        tempoRestante--;
-        if (tempoRestante <= 0) {
-          cronometro?.cancel();
-          moverCaranguejoTimer?.cancel();
-          popupTimer?.cancel();
+        caranguejoPosition = tocas[Random().nextInt(tocas.length)];
+        caranguejoPequeno = Random().nextBool();
+      });
+
+      cronometro = Timer.periodic(const Duration(seconds: 1), (timer) {
+        setState(() {
+          tempoRestante--;
+          if (tempoRestante <= 0) {
+            cronometro?.cancel();
+            moverCaranguejoTimer?.cancel();
+            popupTimer?.cancel();
+          }
+        });
+      });
+
+      popupTimer = Timer.periodic(const Duration(seconds: 15), (_) {
+        if (tempoRestante > 0) {
+          setState(() {
+            mostrarPopup = true;
+            popupIndex = (popupIndex + 1) % mensagens.length;
+          });
+          Future.delayed(const Duration(seconds: 4), () {
+            if (mounted) setState(() => mostrarPopup = false);
+          });
         }
       });
-    });
 
-    popupTimer = Timer.periodic(const Duration(seconds: 15), (_) {
-      if (tempoRestante > 0) {
-        setState(() {
-          mostrarPopup = true;
-          popupIndex = (popupIndex + 1) % mensagens.length;
-        });
-        Future.delayed(const Duration(seconds: 4), () {
-          if (mounted) setState(() => mostrarPopup = false);
-        });
-      }
-    });
-
-    moverCaranguejoTimer = Timer.periodic(const Duration(seconds: 2), (_) {
-      if (tempoRestante > 0) {
-        setState(() {
-          caranguejoPosition = tocas[Random().nextInt(tocas.length)];
-          caranguejoPequeno = Random().nextBool();
-        });
-      }
+      moverCaranguejoTimer = Timer.periodic(const Duration(seconds: 2), (_) {
+        if (tempoRestante > 0) {
+          setState(() {
+            caranguejoPosition = tocas[Random().nextInt(tocas.length)];
+            caranguejoPequeno = Random().nextBool();
+          });
+        }
+      });
     });
   }
 
