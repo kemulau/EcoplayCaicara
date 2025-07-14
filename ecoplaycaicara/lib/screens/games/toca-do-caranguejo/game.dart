@@ -19,14 +19,21 @@ class _TocaGameScreenState extends State<TocaGameScreen> {
   Offset caranguejoPosition = Offset.zero;
 
   final List<Offset> tocas = [
-    const Offset(50, 400),
-    const Offset(150, 420),
-    const Offset(250, 440),
-    const Offset(350, 420),
-    const Offset(450, 400),
-    const Offset(550, 430),
-    const Offset(650, 410),
-    const Offset(750, 440),
+    const Offset(140, 760),
+    const Offset(270, 730),
+    const Offset(400, 710),
+    const Offset(530, 700),
+    const Offset(660, 710),
+    const Offset(790, 730),
+    const Offset(920, 750),
+    const Offset(1050, 770),
+    const Offset(200, 860),
+    const Offset(340, 840),
+    const Offset(480, 830),
+    const Offset(620, 830),
+    const Offset(760, 840),
+    const Offset(900, 860),
+    const Offset(1040, 880),
   ];
 
   final List<String> mensagens = [

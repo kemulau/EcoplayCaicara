@@ -242,6 +242,14 @@ class _CadastroJogadorScreenState extends State<CadastroJogadorScreen> {
                                             ),
                                           ),
                                         );
+                                        if (mounted) {
+                                          Navigator.pushReplacement(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (_) => const HomeScreen(),
+                                            ),
+                                          );
+                                        }
                                       }
                                     },
                                     label: 'Cadastrar',
