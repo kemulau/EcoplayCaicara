@@ -63,9 +63,15 @@ class TocaStartScreen extends StatelessWidget {
                         ),
                         SizedBox(height: 12),
                         Text(
-                          'Clique no caranguejo para ganhar pontos 🎯.\n'
-                          'Ele aparece aleatoriamente em uma das tocas.\n\n'
-                          'Leia as curiosidades e jogue por 60 segundos ⏱️!',
+                          'Clique nos caranguejos para capturá-los 🎯, '
+                          'mas preste atenção ao tamanho e ao período reprodutivo! 🦀\n\n'
+                          '❌ Capturar caranguejos em defeso ou muito pequenos gera -20 pontos '
+                          'e mostra uma explicação sobre a importância da preservação.\n\n'
+                          '✅ Se você respeitar o defeso ou evitar os jovens, recebe +15 pontos e um aviso:\n'
+                          '“Proteger o ciclo reprodutivo mantém o mangue vivo!” 🌱\n\n'
+                          '🧹 Ao clicar em objetos de lixo, como latas e sacolas, '
+                          'você ajuda a limpar o mangue e ganha +20 pontos!\n\n'
+                          '📚 Leia as curiosidades e jogue por 60 segundos ⏱️!',
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             fontSize: 16,
