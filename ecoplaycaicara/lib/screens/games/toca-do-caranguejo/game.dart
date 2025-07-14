@@ -4,6 +4,34 @@ import 'package:flutter/material.dart';
 import '../../../widgets/pixel_button.dart';
 import 'start.dart';
 
+/// Percentuais das posições das tocas em relação
+/// à largura e altura da tela base (1536x1024).
+const _tocasPercentuais = <Offset>[
+  Offset(0.091, 0.742),
+  Offset(0.176, 0.713),
+  Offset(0.260, 0.693),
+  Offset(0.345, 0.684),
+  Offset(0.430, 0.693),
+  Offset(0.514, 0.713),
+  Offset(0.599, 0.732),
+  Offset(0.684, 0.752),
+  Offset(0.130, 0.840),
+  Offset(0.221, 0.820),
+  Offset(0.312, 0.811),
+  Offset(0.404, 0.811),
+  Offset(0.495, 0.820),
+  Offset(0.586, 0.840),
+  Offset(0.677, 0.859),
+];
+
+/// Gera as coordenadas das tocas de acordo com o
+/// tamanho da tela.
+List<Offset> gerarTocas(Size size) {
+  return _tocasPercentuais
+      .map((p) => Offset(p.dx * size.width, p.dy * size.height))
+      .toList();
+}
+
 class TocaGameScreen extends StatefulWidget {
   const TocaGameScreen({super.key});
 
@@ -17,17 +45,11 @@ class _TocaGameScreenState extends State<TocaGameScreen> {
   bool mostrarPopup = false;
   int popupIndex = 0;
   Offset caranguejoPosition = Offset.zero;
+  bool caranguejoPequeno = false;
+  bool mostrarAcaoPopup = false;
+  String mensagemAcao = '';
 
-  final List<Offset> tocas = [
-    const Offset(50, 400),
-    const Offset(150, 420),
-    const Offset(250, 440),
-    const Offset(350, 420),
-    const Offset(450, 400),
-    const Offset(550, 430),
-    const Offset(650, 410),
-    const Offset(750, 440),
-  ];
+  List<Offset> tocas = [];
 
   final List<String> mensagens = [
     '🦀 Os caranguejos ajudam a manter o solo do mangue saudável!',
@@ -43,44 +65,64 @@ class _TocaGameScreenState extends State<TocaGameScreen> {
   void initState() {
     super.initState();
 
-    caranguejoPosition = tocas[Random().nextInt(tocas.length)];
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final size = MediaQuery.of(context).size;
+      tocas = gerarTocas(size);
 
-    cronometro = Timer.periodic(const Duration(seconds: 1), (timer) {
       setState(() {
-        tempoRestante--;
-        if (tempoRestante <= 0) {
-          cronometro?.cancel();
-          moverCaranguejoTimer?.cancel();
-          popupTimer?.cancel();
+        caranguejoPosition = tocas[Random().nextInt(tocas.length)];
+        caranguejoPequeno = Random().nextBool();
+      });
+
+      cronometro = Timer.periodic(const Duration(seconds: 1), (timer) {
+        setState(() {
+          tempoRestante--;
+          if (tempoRestante <= 0) {
+            cronometro?.cancel();
+            moverCaranguejoTimer?.cancel();
+            popupTimer?.cancel();
+          }
+        });
+      });
+
+      popupTimer = Timer.periodic(const Duration(seconds: 15), (_) {
+        if (tempoRestante > 0) {
+          setState(() {
+            mostrarPopup = true;
+            popupIndex = (popupIndex + 1) % mensagens.length;
+          });
+          Future.delayed(const Duration(seconds: 4), () {
+            if (mounted) setState(() => mostrarPopup = false);
+          });
         }
       });
-    });
 
-    popupTimer = Timer.periodic(const Duration(seconds: 15), (_) {
-      if (tempoRestante > 0) {
-        setState(() {
-          mostrarPopup = true;
-          popupIndex = (popupIndex + 1) % mensagens.length;
-        });
-        Future.delayed(const Duration(seconds: 4), () {
-          if (mounted) setState(() => mostrarPopup = false);
-        });
-      }
-    });
-
-    moverCaranguejoTimer = Timer.periodic(const Duration(seconds: 2), (_) {
-      if (tempoRestante > 0) {
-        setState(() {
-          caranguejoPosition = tocas[Random().nextInt(tocas.length)];
-        });
-      }
+      moverCaranguejoTimer = Timer.periodic(const Duration(seconds: 2), (_) {
+        if (tempoRestante > 0) {
+          setState(() {
+            caranguejoPosition = tocas[Random().nextInt(tocas.length)];
+            caranguejoPequeno = Random().nextBool();
+          });
+        }
+      });
     });
   }
 
   void _clicouNoCaranguejo() {
     setState(() {
-      pontuacao++;
+      if (caranguejoPequeno) {
+        pontuacao -= 20;
+        mensagemAcao = '⚠️ Capturar caranguejo jovem prejudica o ciclo do mangue!';
+      } else {
+        pontuacao += 15;
+        mensagemAcao = '✅ Proteger o ciclo reprodutivo mantém o mangue vivo!';
+      }
+      mostrarAcaoPopup = true;
       caranguejoPosition = tocas[Random().nextInt(tocas.length)];
+      caranguejoPequeno = Random().nextBool();
+    });
+    Future.delayed(const Duration(seconds: 4), () {
+      if (mounted) setState(() => mostrarAcaoPopup = false);
     });
   }
 
@@ -132,7 +174,7 @@ class _TocaGameScreenState extends State<TocaGameScreen> {
                 onTap: _clicouNoCaranguejo,
                 child: Image.asset(
                   'lib/assets/games/toca-do-caranguejo/caranguejo.png',
-                  width: 80,
+                  width: caranguejoPequeno ? 50 : 80,
                 ),
               ),
             ),
@@ -140,6 +182,11 @@ class _TocaGameScreenState extends State<TocaGameScreen> {
           if (mostrarPopup && tempoRestante > 0)
             Center(
               child: _popupMensagem(mensagens[popupIndex]),
+            ),
+
+          if (mostrarAcaoPopup && tempoRestante > 0)
+            Center(
+              child: _popupMensagem(mensagemAcao),
             ),
 
           if (tempoRestante <= 0)

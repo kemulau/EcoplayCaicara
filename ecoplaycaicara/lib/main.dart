@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'screens/games/toca-do-caranguejo/start.dart';
+import 'screens/cadastro.dart';
 import 'theme/retro.dart';
 
 
@@ -19,7 +19,7 @@ class EcoplayCaicaraApp extends StatelessWidget {
       theme: retroGameTheme.copyWith(
         textTheme: GoogleFonts.pressStart2pTextTheme(),
       ),
-      home: const TocaStartScreen(), // ← abre direto o jogo
+      home: const CadastroJogadorScreen(),
     );
   }
 }
