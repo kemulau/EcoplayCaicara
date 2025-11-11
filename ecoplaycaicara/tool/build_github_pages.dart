@@ -27,14 +27,14 @@ Future<void> main(List<String> args) async {
   }
 
   stdout.writeln(
-    'Building flutter web (renderer: html, base href: /ecoplaycaicara/)...',
+    'Building flutter web (renderer: html, base href: /EcoplayCaicara/)...',
   );
   final baseArgs = <String>[
     'build',
     'web',
     '--release',
     '--base-href',
-    '/ecoplaycaicara/',
+    '/EcoplayCaicara/',
   ];
 
   var buildResult = await _run(
