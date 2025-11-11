@@ -1,0 +1,19 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Web Chrome (HTML renderer)",
+      "request": "launch",
+      "type": "dart",
+      "deviceId": "chrome",
+      "args": ["--web-renderer=html"]
+    },
+    {
+      "name": "Web Edge (HTML renderer)",
+      "request": "launch",
+      "type": "dart",
+      "deviceId": "edge",
+      "args": ["--web-renderer=html"]
+    }
+  ]
+}

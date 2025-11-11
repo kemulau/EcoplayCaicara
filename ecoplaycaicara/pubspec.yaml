@@ -1,0 +1,64 @@
+name: ecoplaycaicara
+description: "A new Flutter project."
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: ">=3.8.0 <4.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flame: 1.18.0
+  flame_audio: 2.10.1
+  audioplayers: 5.2.1
+  cupertino_icons: 1.0.8
+  shared_preferences: 2.2.3
+  provider: 6.1.1
+  form_field_validator: 1.1.0
+  image_picker: 1.0.7
+  page_flip: 0.2.5+1
+  image: 4.1.3
+
+dependency_overrides:
+  flame: 1.18.0
+
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+
+flutter:
+  uses-material-design: true
+
+  assets:
+  - assets/images/
+  - assets/avatares/
+  - assets/cards/
+  - assets/games/toca-do-caranguejo/
+  - assets/audio/
+  
+  fonts:
+    - family: PressStart2P
+      fonts:
+        - asset: assets/fonts/PressStart2P-Regular.ttf
+    - family: OpenDyslexic
+      fonts:
+        - asset: assets/fonts/OpenDyslexic-Regular.otf
+        - asset: assets/fonts/OpenDyslexic-Bold.otf
+          weight: 700
+        - asset: assets/fonts/OpenDyslexic-Bold-Italic.otf
+          weight: 700
+          style: italic
+    - family: ComicSansLdf
+      fonts:
+        - asset: assets/fonts/Ldfcomicsans-jj7l.ttf
+          weight: 400
+        - asset: assets/fonts/Ldfcomicsanslight-6dZo.ttf
+          weight: 300
+        - asset: assets/fonts/Ldfcomicsanshairline-5PmL.ttf
+          weight: 100
+        - asset: assets/fonts/Ldfcomicsansbold-zgma.ttf
+          weight: 700
