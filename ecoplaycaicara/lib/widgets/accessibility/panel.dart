@@ -97,6 +97,22 @@ class _A11yPanelState extends State<A11yPanel>
     _compactMode = !_isMobile;
     _ensureTabController(widget.layout.isMobile);
     _bootstrapTts();
+
+    // ✅ Garante que "Narrar ao focar/pressionar" NÃO esteja ativo ao iniciar,
+    // mesmo que tenha ficado salvo como true em versões anteriores.
+    unawaited(_forceDisableReadUiIfLegacy());
+  }
+
+  /// Força a preferência antiga `ttsReadUi` para false se estiver ligada,
+  /// evitando que a narração da UI inicie sozinha ao abrir o app.
+  Future<void> _forceDisableReadUiIfLegacy() async {
+    final prefs = UserPrefs.instance;
+    await prefs.ensureLoaded();
+    if (prefs.ttsReadUiNotifier.value) {
+      await prefs.setTtsReadUi(false);
+      TtsService.instance.updateFromPrefs(prefs);
+      if (mounted) setState(() {});
+    }
   }
 
   Future<void> _bootstrapTts({bool force = false}) async {
@@ -549,8 +565,8 @@ class _A11yPanelState extends State<A11yPanel>
         child: Text(
           '${percent.round()}%',
           style: Theme.of(context).textTheme.labelMedium?.copyWith(
-            color: Theme.of(context).colorScheme.onSurface.withOpacity(0.74),
-          ),
+                color: Theme.of(context).colorScheme.onSurface.withOpacity(0.74),
+              ),
         ),
       ),
       slider: Slider(
@@ -569,12 +585,10 @@ class _A11yPanelState extends State<A11yPanel>
   }
 
   Widget _buildFontSelector(ThemeProvider tp) {
-    final Color subtitleColor = Theme.of(
-      context,
-    ).colorScheme.onSurface.withOpacity(0.7);
-    final TextStyle? subtitleStyle = Theme.of(
-      context,
-    ).textTheme.bodySmall?.copyWith(color: subtitleColor);
+    final Color subtitleColor =
+        Theme.of(context).colorScheme.onSurface.withOpacity(0.7);
+    final TextStyle? subtitleStyle =
+        Theme.of(context).textTheme.bodySmall?.copyWith(color: subtitleColor);
     final List<Widget> options = AccessibilityFont.values.map((font) {
       final String label = _fontLabel(font);
       final String description = _fontDescription(font);
@@ -606,12 +620,10 @@ class _A11yPanelState extends State<A11yPanel>
   }
 
   Widget _buildColorVisionSelector(ThemeProvider tp) {
-    final Color subtitleColor = Theme.of(
-      context,
-    ).colorScheme.onSurface.withOpacity(0.7);
-    final TextStyle? subtitleStyle = Theme.of(
-      context,
-    ).textTheme.bodySmall?.copyWith(color: subtitleColor);
+    final Color subtitleColor =
+        Theme.of(context).colorScheme.onSurface.withOpacity(0.7);
+    final TextStyle? subtitleStyle =
+        Theme.of(context).textTheme.bodySmall?.copyWith(color: subtitleColor);
     final List<Widget> options = tp.availableCvdTypes.map((type) {
       final String label = _cvdLabel(type);
       final String description = _cvdDescription(type);
@@ -912,10 +924,11 @@ class _SliderTile extends StatelessWidget {
               Text(
                 valueLabel!,
                 style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                  color: Theme.of(
-                    context,
-                  ).colorScheme.onSurface.withOpacity(0.7),
-                ),
+                      color: Theme.of(context)
+                          .colorScheme
+                          .onSurface
+                          .withOpacity(0.7),
+                    ),
               ),
             ],
             if (trailing != null) ...[const SizedBox(width: 8), trailing!],
@@ -1085,9 +1098,8 @@ class _DesktopSection extends StatelessWidget {
   Widget build(BuildContext context) {
     if (children.isEmpty) return const SizedBox.shrink();
 
-    final TextStyle? titleStyle = Theme.of(
-      context,
-    ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700);
+    final TextStyle? titleStyle =
+        Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700);
     return Padding(
       padding: const EdgeInsets.only(bottom: 24),
       child: Column(
@@ -1181,9 +1193,7 @@ class _MobilePanel extends StatelessWidget {
                 height: 4,
                 margin: const EdgeInsets.only(bottom: 12),
                 decoration: BoxDecoration(
-                  color: Theme.of(
-                    context,
-                  ).colorScheme.onSurface.withOpacity(0.24),
+                  color: Theme.of(context).colorScheme.onSurface.withOpacity(0.24),
                   borderRadius: BorderRadius.circular(99),
                 ),
               ),
@@ -1393,9 +1403,8 @@ class _PanelHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final TextStyle? style = Theme.of(
-      context,
-    ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w800);
+    final TextStyle? style =
+        Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w800);
     final Widget title = Tooltip(
       message: 'Acessibilidade',
       child: Text(
