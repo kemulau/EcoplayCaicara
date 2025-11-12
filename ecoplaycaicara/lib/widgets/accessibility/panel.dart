@@ -280,7 +280,6 @@ class _A11yPanelState extends State<A11yPanel>
     UserPrefs prefs,
   ) {
     final List<Widget> leitura = <Widget>[
-      _buildNarrateUiTile(prefs),
       _buildTtsEnabledTile(context, prefs),
       _buildVolumeSlider(prefs),
       _buildVoiceSelector(context, prefs),
@@ -384,35 +383,7 @@ class _A11yPanelState extends State<A11yPanel>
     );
   }
 
-  Widget _buildNarrateUiTile(UserPrefs prefs) {
-    return ValueListenableBuilder<bool>(
-      valueListenable: prefs.ttsReadUiNotifier,
-      builder: (_, readUi, __) {
-        final bool loaded = prefs.isLoaded;
-        return Narrable(
-          text: 'Narrar ao focar/pressionar',
-          tooltip:
-              'Lê textos da interface ao focar, passar o mouse ou tocar prolongado.',
-          child: SwitchListTile.adaptive(
-            value: readUi,
-            onChanged: loaded
-                ? (value) async {
-                    await prefs.setTtsReadUi(value);
-                    TtsService.instance.updateFromPrefs(prefs);
-                    if (value) {
-                      await TtsService.instance.ensureUnlockedByUserGesture();
-                    }
-                  }
-                : null,
-            title: const Text('Narrar ao focar/pressionar'),
-            subtitle: const Text(
-              'Lê textos da interface ao focar, passar o mouse ou pressionar.',
-            ),
-          ),
-        );
-      },
-    );
-  }
+  // REMOVIDO: _buildNarrateUiTile (Narrar ao focar/pressionar)
 
   Widget _buildTtsEnabledTile(BuildContext context, UserPrefs prefs) {
     return ValueListenableBuilder<bool>(
@@ -702,7 +673,7 @@ class _A11yPanelState extends State<A11yPanel>
     await prefs.ensureLoaded();
     _restoreDefaults(tp);
     await prefs.setShowTooltips(true);
-    await prefs.setTtsReadUi(false);
+    await prefs.setTtsReadUi(false); // mantém o default salvo, sem mostrar na UI
     await prefs.setTtsVolume(TtsDefaults.volumeDefault);
     TtsService.instance.updateFromPrefs(prefs);
     if (mounted) {
