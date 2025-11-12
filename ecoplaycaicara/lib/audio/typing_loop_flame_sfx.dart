@@ -24,7 +24,9 @@ class TypingLoopFlameSfx {
     if (_initialized) return;
     FlameAudio.updatePrefix('assets/');
     FlameAudio.bgm.initialize();
-    await FlameAudio.audioCache.load(_assetPath); // preload para reduzir latência
+    await FlameAudio.audioCache.load(
+      _assetPath,
+    ); // preload para reduzir latência
     _initialized = true;
   }
 

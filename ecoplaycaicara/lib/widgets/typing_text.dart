@@ -2,6 +2,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import 'narrable.dart';
+
 /// Animação de digitação para textos curtos (balões/popup).
 /// - Exibe 1 caractere por vez com intervalo configurável.
 /// - Emite um pequeno "click" do sistema a cada N caracteres (fallback cross‑platform).
@@ -116,29 +118,33 @@ class _TypingTextState extends State<TypingText> {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Text(
+        Narrable.text(
           _shown,
           style: widget.style ?? Theme.of(context).textTheme.bodyMedium,
           textAlign: TextAlign.center,
+          readOnFocus: false,
         ),
         const SizedBox(height: 8),
         if (widget.showSkipButton)
           Align(
             alignment: Alignment.centerRight,
-            child: TextButton(
-              onPressed: () {
-                if (widget.onSkip != null) {
-                  widget.onSkip!();
-                } else {
-                  _skip();
-                }
-              },
-              child: Text(
-                'Pular',
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      decoration: TextDecoration.underline,
-                      color: Theme.of(context).colorScheme.primary,
-                    ),
+            child: Narrable(
+              text: 'Pular texto',
+              child: TextButton(
+                onPressed: () {
+                  if (widget.onSkip != null) {
+                    widget.onSkip!();
+                  } else {
+                    _skip();
+                  }
+                },
+                child: Text(
+                  'Pular',
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    decoration: TextDecoration.underline,
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
+                ),
               ),
             ),
           ),
@@ -152,4 +158,3 @@ class TypingTextController {
   void _attach(VoidCallback f) => _skipImpl = f;
   void skip() => _skipImpl?.call();
 }
-

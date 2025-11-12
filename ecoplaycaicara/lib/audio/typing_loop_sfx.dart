@@ -44,4 +44,3 @@ class TypingLoopSfx {
     await _player.dispose();
   }
 }
-

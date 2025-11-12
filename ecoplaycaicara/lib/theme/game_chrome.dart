@@ -13,6 +13,7 @@ class GameChrome extends ThemeExtension<GameChrome> {
     required this.panelBorder,
     required this.panelShadow,
     required this.panelBackground,
+    required this.panelBorderWidth,
   });
 
   // PixelButton
@@ -27,8 +28,36 @@ class GameChrome extends ThemeExtension<GameChrome> {
   final Color panelBorder;
   final List<BoxShadow> panelShadow;
   final Color panelBackground;
+  final double panelBorderWidth;
 
   static GameChrome fromScheme(ColorScheme scheme) {
+    if (scheme.brightness == Brightness.dark) {
+      return GameChrome(
+        buttonRadius: 12,
+        buttonBorder: const Color(0xFF3D1708),
+        buttonShadow: [
+          BoxShadow(
+            offset: const Offset(0, 10),
+            blurRadius: 22,
+            color: Colors.black.withOpacity(0.55),
+          ),
+        ],
+        buttonGradientTop: const Color(0xFFC3601D),
+        buttonGradientBottom: const Color(0xFF7B2C0A),
+        panelRadius: 18,
+        panelBorder: const Color(0xFF8F5A2A),
+        panelShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.5),
+            blurRadius: 20,
+            offset: const Offset(0, 12),
+          ),
+        ],
+        panelBackground: const Color(0xFF16100A).withOpacity(0.92),
+        panelBorderWidth: 2,
+      );
+    }
+
     return GameChrome(
       buttonRadius: 12,
       buttonBorder: _shade(scheme.primary, .40),
@@ -37,7 +66,7 @@ class GameChrome extends ThemeExtension<GameChrome> {
           offset: const Offset(0, 8),
           blurRadius: 18,
           color: Colors.black.withOpacity(0.35),
-        )
+        ),
       ],
       buttonGradientTop: _tint(scheme.primary, .18),
       buttonGradientBottom: _shade(scheme.primary, .20),
@@ -50,10 +79,8 @@ class GameChrome extends ThemeExtension<GameChrome> {
           offset: const Offset(0, 8),
         ),
       ],
-      panelBackground: (scheme.brightness == Brightness.dark
-              ? scheme.surface
-              : scheme.background)
-          .withOpacity(.86),
+      panelBackground: scheme.background.withOpacity(.86),
+      panelBorderWidth: 2,
     );
   }
 
@@ -68,6 +95,7 @@ class GameChrome extends ThemeExtension<GameChrome> {
     Color? panelBorder,
     List<BoxShadow>? panelShadow,
     Color? panelBackground,
+    double? panelBorderWidth,
   }) {
     return GameChrome(
       buttonRadius: buttonRadius ?? this.buttonRadius,
@@ -79,6 +107,7 @@ class GameChrome extends ThemeExtension<GameChrome> {
       panelBorder: panelBorder ?? this.panelBorder,
       panelShadow: panelShadow ?? this.panelShadow,
       panelBackground: panelBackground ?? this.panelBackground,
+      panelBorderWidth: panelBorderWidth ?? this.panelBorderWidth,
     );
   }
 
@@ -89,13 +118,21 @@ class GameChrome extends ThemeExtension<GameChrome> {
       buttonRadius: lerpDouble(buttonRadius, other.buttonRadius, t),
       buttonBorder: Color.lerp(buttonBorder, other.buttonBorder, t)!,
       buttonShadow: other.buttonShadow, // simplificação
-      buttonGradientTop: Color.lerp(buttonGradientTop, other.buttonGradientTop, t)!,
-      buttonGradientBottom:
-          Color.lerp(buttonGradientBottom, other.buttonGradientBottom, t)!,
+      buttonGradientTop: Color.lerp(
+        buttonGradientTop,
+        other.buttonGradientTop,
+        t,
+      )!,
+      buttonGradientBottom: Color.lerp(
+        buttonGradientBottom,
+        other.buttonGradientBottom,
+        t,
+      )!,
       panelRadius: lerpDouble(panelRadius, other.panelRadius, t),
       panelBorder: Color.lerp(panelBorder, other.panelBorder, t)!,
       panelShadow: other.panelShadow,
       panelBackground: Color.lerp(panelBackground, other.panelBackground, t)!,
+      panelBorderWidth: lerpDouble(panelBorderWidth, other.panelBorderWidth, t),
     );
   }
 }
@@ -113,4 +150,3 @@ Color _shade(Color c, double amount) {
   final light = (hsl.lightness - amount).clamp(0.0, 1.0);
   return hsl.withLightness(light.toDouble()).toColor();
 }
-

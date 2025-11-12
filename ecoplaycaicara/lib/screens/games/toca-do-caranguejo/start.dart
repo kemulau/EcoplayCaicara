@@ -5,7 +5,9 @@ import 'game.dart' deferred as game;
 import 'tutorial.dart' deferred as tutorial;
 import 'livro_do_mangue.dart' deferred as livro; // <<< NOVO
 import '../../../theme/game_styles.dart';
-import '../../../widgets/a11y_panel.dart'; // [A11Y]
+import '../../../widgets/accessibility/panel.dart'; // [A11Y]
+import '../../../widgets/game_loading_screen.dart';
+import '../../../widgets/narrable.dart';
 
 class TocaStartScreen extends StatelessWidget {
   const TocaStartScreen({super.key});
@@ -27,7 +29,7 @@ class TocaStartScreen extends StatelessWidget {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Text(
+                Narrable.text(
                   'Escolha uma opção',
                   style: Theme.of(context).textTheme.bodyMedium,
                 ),
@@ -55,9 +57,10 @@ class TocaStartScreen extends StatelessWidget {
                 Builder(
                   builder: (context) {
                     final styles = Theme.of(context).extension<GameStyles>();
-                    return Text(
+                    return Narrable.text(
                       'Aprenda as regras rapidamente',
                       style: styles?.hint,
+                      readOnFocus: false,
                     );
                   },
                 ),
@@ -70,12 +73,30 @@ class TocaStartScreen extends StatelessWidget {
                   iconRight: true,
                   width: btnWidth,
                   height: 52,
-                  onPressed: () async {
-                    await game.loadLibrary();
-                    // ignore: use_build_context_synchronously
+                  onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (_) => game.TocaGameScreen()),
+                      MaterialPageRoute(
+                        builder: (_) => GameLoadingScreen(
+                          title: 'Toca do Caranguejo',
+                          backgroundAsset:
+                              'assets/games/toca-do-caranguejo/background.png',
+                          mobileBackgroundAsset:
+                              'assets/games/toca-do-caranguejo/background-mobile.png',
+                          onLoad: () async {
+                            await game.loadLibrary();
+                            try {
+                              await game
+                                  .preloadTocaDoCaranguejoGame()
+                                  .timeout(
+                                    const Duration(seconds: 8),
+                                    onTimeout: () async {},
+                                  );
+                            } catch (_) {}
+                          },
+                          onReady: (_) => game.TocaGameScreen(),
+                        ),
+                      ),
                     );
                   },
                 ),
@@ -83,7 +104,11 @@ class TocaStartScreen extends StatelessWidget {
                 Builder(
                   builder: (context) {
                     final styles = Theme.of(context).extension<GameStyles>();
-                    return Text('Ir direto para o jogo', style: styles?.hint);
+                    return Narrable.text(
+                      'Ir direto para o jogo',
+                      style: styles?.hint,
+                      readOnFocus: false,
+                    );
                   },
                 ),
 
@@ -97,7 +122,8 @@ class TocaStartScreen extends StatelessWidget {
                   height: 52,
                   onPressed: () async {
                     await livro.loadLibrary();
-                    if (!context.mounted) return; // evita usar context após await
+                    if (!context.mounted)
+                      return; // evita usar context após await
                     Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -110,9 +136,10 @@ class TocaStartScreen extends StatelessWidget {
                 Builder(
                   builder: (context) {
                     final styles = Theme.of(context).extension<GameStyles>();
-                    return Text(
+                    return Narrable.text(
                       'Abrir livro com páginas interativas',
                       style: styles?.hint,
+                      readOnFocus: false,
                     );
                   },
                 ),
@@ -126,21 +153,17 @@ class TocaStartScreen extends StatelessWidget {
                   width: btnWidth,
                   height: 52,
                   onPressed: () async {
-                    await showModalBottomSheet(
-                      context: context,
-                      isScrollControlled: true,
-                      useSafeArea: true,
-                      builder: (_) => const A11yPanel(),
-                    );
+                    await showA11yPanelBottomSheet(context);
                   },
                 ),
                 const SizedBox(height: 6),
                 Builder(
                   builder: (context) {
                     final styles = Theme.of(context).extension<GameStyles>();
-                    return Text(
+                    return Narrable.text(
                       'Ajuste fontes, contraste e cores',
                       style: styles?.hint,
+                      readOnFocus: false,
                     );
                   },
                 ),

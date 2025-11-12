@@ -29,16 +29,22 @@ final ThemeData baseGameTheme = ThemeData(
     foregroundColor: Colors.white,
     elevation: 0,
     centerTitle: true,
-    titleTextStyle: TextStyle(fontFamily: 'PressStart2P', fontSize: 14, color: Colors.white),
-    shape: const Border(
-      bottom: BorderSide(color: Color(0xFF3F2A1D), width: 4),
+    titleTextStyle: TextStyle(
+      fontFamily: 'PressStart2P',
+      fontSize: 14,
+      color: Colors.white,
     ),
+    shape: const Border(bottom: BorderSide(color: Color(0xFF3F2A1D), width: 4)),
   ),
 
   inputDecorationTheme: InputDecorationTheme(
     filled: true,
     fillColor: Colors.white.withOpacity(0.95),
-    labelStyle: const TextStyle(fontFamily: 'PressStart2P', fontSize: 10, color: Color(0xFF3A2C20)),
+    labelStyle: const TextStyle(
+      fontFamily: 'PressStart2P',
+      fontSize: 10,
+      color: Color(0xFF3A2C20),
+    ),
     border: OutlineInputBorder(
       borderRadius: BorderRadius.circular(4),
       borderSide: const BorderSide(color: Color(0xFF6B4E33), width: 2),

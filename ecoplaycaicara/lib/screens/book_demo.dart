@@ -9,7 +9,8 @@ import '../theme/theme_provider.dart';
 class BookDemoScreen extends StatelessWidget {
   const BookDemoScreen({super.key});
 
-  static const String _lorem = '''Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer a pulvinar nibh. Suspendisse potenti. Aliquam dapibus, tortor in dictum ultricies, velit ipsum ultricies massa, id viverra sem leo nec orci. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Proin id condimentum enim. Cras sed sollicitudin dui. Maecenas viverra, ex in tempor finibus, nibh lacus hendrerit magna, at faucibus dui tellus sit amet elit. Donec ultrices rhoncus metus, sit amet tincidunt mi tristique vitae. Integer ac rhoncus mi. Sed euismod, quam in laoreet hendrerit, erat risus varius arcu, non posuere felis lorem et lectus.
+  static const String _lorem =
+      '''Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer a pulvinar nibh. Suspendisse potenti. Aliquam dapibus, tortor in dictum ultricies, velit ipsum ultricies massa, id viverra sem leo nec orci. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Proin id condimentum enim. Cras sed sollicitudin dui. Maecenas viverra, ex in tempor finibus, nibh lacus hendrerit magna, at faucibus dui tellus sit amet elit. Donec ultrices rhoncus metus, sit amet tincidunt mi tristique vitae. Integer ac rhoncus mi. Sed euismod, quam in laoreet hendrerit, erat risus varius arcu, non posuere felis lorem et lectus.
 
 Curabitur non risus nisi. Donec condimentum mauris et ex scelerisque, vitae placerat dui imperdiet. Nulla facilisi. Integer interdum mi leo, sit amet posuere sem pretium at. Vivamus vitae quam nec dui porttitor mattis. Aenean eleifend, justo et cursus fermentum, massa lorem aliquet ex, id porttitor dui est id nisl. Proin molestie fringilla sem, nec facilisis odio volutpat vel.
 

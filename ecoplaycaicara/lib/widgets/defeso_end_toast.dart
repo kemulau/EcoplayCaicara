@@ -101,7 +101,10 @@ class _DefesoEndToastState extends State<DefesoEndToast>
             child: FadeTransition(
               opacity: _fade,
               child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 10,
+                ),
                 decoration: BoxDecoration(
                   color: Colors.white.withOpacity(0.95),
                   border: Border.all(color: const Color(0xFF7A4E2F), width: 3),

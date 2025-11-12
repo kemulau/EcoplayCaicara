@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'color_matrices.dart';
+
 /// Utilitários de simulação de deficiências de visão de cores (CVD)
 ///
 /// Este módulo expõe:
@@ -48,10 +50,26 @@ enum ColorVisionType {
 
 /// Matriz identidade (sem alteração)
 const List<double> _identityMatrix = <double>[
-  1, 0, 0, 0, 0,
-  0, 1, 0, 0, 0,
-  0, 0, 1, 0, 0,
-  0, 0, 0, 1, 0,
+  1,
+  0,
+  0,
+  0,
+  0,
+  0,
+  1,
+  0,
+  0,
+  0,
+  0,
+  0,
+  1,
+  0,
+  0,
+  0,
+  0,
+  0,
+  1,
+  0,
 ];
 
 /// Matrizes de simulação de daltonismo (aproximações amplamente utilizadas)
@@ -61,42 +79,86 @@ const Map<ColorVisionType, List<double>> _cvdMatrices = {
 
   // Protanopia: deficiência nos cones sensíveis ao vermelho
   ColorVisionType.protanopia: <double>[
-    0.567, 0.433, 0.000, 0, 0,
-    0.558, 0.442, 0.000, 0, 0,
-    0.000, 0.242, 0.758, 0, 0,
-    0.000, 0.000, 0.000, 1, 0,
+    0.567,
+    0.433,
+    0.000,
+    0,
+    0,
+    0.558,
+    0.442,
+    0.000,
+    0,
+    0,
+    0.000,
+    0.242,
+    0.758,
+    0,
+    0,
+    0.000,
+    0.000,
+    0.000,
+    1,
+    0,
   ],
 
   // Deuteranopia: deficiência nos cones sensíveis ao verde
   ColorVisionType.deuteranopia: <double>[
-    0.625, 0.375, 0.000, 0, 0,
-    0.700, 0.300, 0.000, 0, 0,
-    0.000, 0.300, 0.700, 0, 0,
-    0.000, 0.000, 0.000, 1, 0,
+    0.625,
+    0.375,
+    0.000,
+    0,
+    0,
+    0.700,
+    0.300,
+    0.000,
+    0,
+    0,
+    0.000,
+    0.300,
+    0.700,
+    0,
+    0,
+    0.000,
+    0.000,
+    0.000,
+    1,
+    0,
   ],
 
   // Tritanopia: deficiência nos cones sensíveis ao azul
   ColorVisionType.tritanopia: <double>[
-    0.950, 0.050, 0.000, 0, 0,
-    0.000, 0.433, 0.567, 0, 0,
-    0.000, 0.475, 0.525, 0, 0,
-    0.000, 0.000, 0.000, 1, 0,
+    0.950,
+    0.050,
+    0.000,
+    0,
+    0,
+    0.000,
+    0.433,
+    0.567,
+    0,
+    0,
+    0.000,
+    0.475,
+    0.525,
+    0,
+    0,
+    0.000,
+    0.000,
+    0.000,
+    1,
+    0,
   ],
 
   // Acromatopsia: ausência de percepção de cor (tons de cinza)
-  ColorVisionType.achromatopsia: <double>[
-    0.299, 0.587, 0.114, 0, 0,
-    0.299, 0.587, 0.114, 0, 0,
-    0.299, 0.587, 0.114, 0, 0,
-    0.000, 0.000, 0.000, 1, 0,
-  ],
+  ColorVisionType.achromatopsia: kRelativeLuminanceGrayscaleMatrix,
 };
 
 ColorFilter colorFilterFor(ColorVisionType type) {
   return ColorFilter.matrix(_cvdMatrices[type] ?? _identityMatrix);
 }
 
-List<double> matrixFor(ColorVisionType type) => _cvdMatrices[type] ?? _identityMatrix;
+List<double> matrixFor(ColorVisionType type) =>
+    _cvdMatrices[type] ?? _identityMatrix;
 
 String cvdToStorage(ColorVisionType type) => type.name;
 

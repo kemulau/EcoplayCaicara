@@ -600,7 +600,7 @@ class CrabGame extends FlameGame {
   static const List<String> _imageAssets = <String>[
     'games/toca-do-caranguejo/background.png',
     'games/toca-do-caranguejo/background-mobile.png',
-    'games/toca-do-caranguejo/acertou.png',
+    'images/acertou.png',
     'games/toca-do-caranguejo/caranguejo.png',
     'games/toca-do-caranguejo/residuo-caixa.png',
     'games/toca-do-caranguejo/lata.png',
@@ -761,7 +761,7 @@ class CrabGame extends FlameGame {
 
     final sprites = await Future.wait<Sprite>([
       Sprite.load(bgPath, images: images),
-      Sprite.load('games/toca-do-caranguejo/acertou.png', images: images),
+      Sprite.load('images/acertou.png', images: images),
       Sprite.load('games/toca-do-caranguejo/caranguejo.png', images: images),
     ]);
 

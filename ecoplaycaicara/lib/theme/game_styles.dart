@@ -12,7 +12,11 @@ class GameStyles extends ThemeExtension<GameStyles> {
   final TextStyle link;
 
   @override
-  GameStyles copyWith({TextStyle? tutorialBody, TextStyle? hint, TextStyle? link}) {
+  GameStyles copyWith({
+    TextStyle? tutorialBody,
+    TextStyle? hint,
+    TextStyle? link,
+  }) {
     return GameStyles(
       tutorialBody: tutorialBody ?? this.tutorialBody,
       hint: hint ?? this.hint,

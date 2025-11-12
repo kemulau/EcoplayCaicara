@@ -14,8 +14,12 @@ import 'flame_game.dart';
 import 'start.dart';
 import 'debug_burrows_overlay.dart';
 
-// [A11Y] painel reutilizável igual ao do cadastro
-import '../../../widgets/a11y_panel.dart'; // [A11Y]
+// [A11Y] painel reutilizável igual ao do cadastro 
+import '../../../widgets/accessibility/panel.dart'; // [A11Y]
+
+Future<void> preloadTocaDoCaranguejoGame() {
+  return CrabGame.preloadAssets();
+}
 
 class TocaGameScreen extends StatefulWidget {
   const TocaGameScreen({super.key, this.skipStartGate = false});
@@ -136,12 +140,7 @@ class _HudOverlay extends StatelessWidget {
   // [A11Y] abre o painel e pausa/resume o engine
   Future<void> _openA11y(BuildContext context) async {
     game.pauseEngine(); // pausa o loop gráfico (timers internos do jogo seguem)
-    await showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      useSafeArea: true,
-      builder: (_) => const A11yPanel(),
-    );
+    await showA11yPanelBottomSheet(context);
     game.resumeEngine();
   }
   // [A11Y] fim

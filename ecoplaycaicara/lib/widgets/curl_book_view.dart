@@ -18,9 +18,9 @@ class CurlBookView extends StatefulWidget {
     this.outerPadding = const EdgeInsets.all(1),
     this.flipKey, // <<< permite controlar o PageFlip de fora
     // --------- NOVOS PARÂMETROS (opcionais / compatíveis) ----------
-    this.autoAspect = true,                 // alterna AR em portrait
-    this.portraitAspectRatio = 3 / 4,       // AR usado quando "em pé"
-    this.edgeTapWidthFraction = 0.33,       // faixa lateral de toque
+    this.autoAspect = true, // alterna AR em portrait
+    this.portraitAspectRatio = 3 / 4, // AR usado quando "em pé"
+    this.edgeTapWidthFraction = 0.33, // faixa lateral de toque
     this.onPageChanged,
   });
 
@@ -92,8 +92,10 @@ class _CurlBookViewState extends State<CurlBookView> {
           w = h * targetAR;
         }
 
-        final double edgeFrac =
-            widget.edgeTapWidthFraction.clamp(0.05, 0.5); // sanidade
+        final double edgeFrac = widget.edgeTapWidthFraction.clamp(
+          0.05,
+          0.5,
+        ); // sanidade
 
         return Padding(
           padding: widget.outerPadding,
@@ -217,10 +219,7 @@ class _Paper extends StatelessWidget {
               Color.alphaBlend(Colors.black.withOpacity(0.03), paper),
             ],
           ),
-          border: Border.all(
-            color: Colors.brown.withOpacity(0.2),
-            width: 1.2,
-          ),
+          border: Border.all(color: Colors.brown.withOpacity(0.2), width: 1.2),
           boxShadow: [
             BoxShadow(
               color: Colors.black.withOpacity(0.16),
@@ -232,10 +231,11 @@ class _Paper extends StatelessWidget {
         child: Padding(
           padding: padding,
           child: DefaultTextStyle(
-            style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                      height: 1.35,
-                      color: Colors.brown.shade900,
-                    ) ??
+            style:
+                Theme.of(context).textTheme.bodyLarge?.copyWith(
+                  height: 1.35,
+                  color: Colors.brown.shade900,
+                ) ??
                 TextStyle(height: 1.35, color: Colors.brown.shade900),
             child: child,
           ),
@@ -274,6 +274,5 @@ class _CenterGutterPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(covariant _CenterGutterPainter oldDelegate) =>
-      oldDelegate.color != color ||
-      oldDelegate.gutterWidth != gutterWidth;
+      oldDelegate.color != color || oldDelegate.gutterWidth != gutterWidth;
 }

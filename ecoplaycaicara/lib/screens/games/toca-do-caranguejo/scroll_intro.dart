@@ -4,6 +4,7 @@ import 'package:flame/events.dart';
 import 'package:flame/effects.dart';
 import 'package:flame/game.dart';
 import 'package:flame/text.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 /// Pergaminho com abertura e fechamento, usando 3 frames de sprite.
@@ -70,30 +71,23 @@ class ScrollIntro extends PositionComponent
 
   static const String _lineText1 = 'PERÍODO';
   static const String _lineText2 = 'DEFESO';
+  static const List<String> _pergaminhoAssets = <String>[
+    'games/toca-do-caranguejo/pergaminho-fechado-1.png',
+    'games/toca-do-caranguejo/pergaminho-entreaberto-2.png',
+    'games/toca-do-caranguejo/pergaminho-aberto-3.png',
+  ];
+
+  static Future<List<Sprite>?>? _spriteFramesFuture;
 
   @override
   Future<void> onLoad() async {
     await super.onLoad();
 
-    Future<Sprite?> _tryLoad(String path) async {
-      try {
-        return await gameRef.loadSprite(path);
-      } catch (_) {
-        // ignore: avoid_print
-        print('ScrollIntro: não encontrou "$path".');
-        return null;
-      }
-    }
+    final sprites = await _loadSpriteFrames(gameRef);
 
-    Future<Sprite?> _loadPerg(String name) =>
-        _tryLoad('games/toca-do-caranguejo/$name');
-    final s1 = await _loadPerg('pergaminho-fechado-1.png');
-    final s2 = await _loadPerg('pergaminho-entreaberto-2.png');
-    final s3 = await _loadPerg('pergaminho-aberto-3.png');
-
-    if (s1 != null && s2 != null && s3 != null) {
-      _openFrames  = [s1, s2, s3];
-      _closeFrames = [s3, s2, s1];
+    if (sprites != null) {
+      _openFrames = sprites;
+      _closeFrames = sprites.reversed.toList(growable: false);
     } else {
       // Fallback simples (painel)
       final panelW = (gameRef.size.x * 0.70).clamp(320, 900).toDouble();
@@ -595,5 +589,37 @@ class ScrollIntro extends PositionComponent
     _tapCompleter = null;
     _unmountTextIfMounted();
     super.onRemove();
+  }
+
+  Future<List<Sprite>?> _loadSpriteFrames(FlameGame game) async {
+    final cached = _spriteFramesFuture;
+    if (cached != null) return cached;
+
+    final future = Future.wait<Sprite?>(
+      _pergaminhoAssets.map((path) async {
+        try {
+          return await game.loadSprite(path);
+        } catch (e) {
+          debugPrint('ScrollIntro: erro ao carregar "$path": $e');
+          return null;
+        }
+      }),
+      eagerError: true,
+    ).then((sprites) {
+      if (sprites.any((sprite) => sprite == null)) {
+        return null;
+      }
+      return sprites.cast<Sprite>();
+    });
+
+    _spriteFramesFuture = future;
+    future.then(
+      (value) {
+        if (value == null) _spriteFramesFuture = null;
+      },
+      onError: (_) => _spriteFramesFuture = null,
+    );
+
+    return future;
   }
 }

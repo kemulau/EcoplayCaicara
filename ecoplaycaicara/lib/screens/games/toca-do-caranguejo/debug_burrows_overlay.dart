@@ -58,7 +58,11 @@ class _BurrowsPainter extends CustomPainter {
     final textPainter = TextPainter(
       text: TextSpan(
         text: 'Tocas: ${burrows.length} / 17',
-        style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 12),
+        style: const TextStyle(
+          color: Colors.white,
+          fontWeight: FontWeight.bold,
+          fontSize: 12,
+        ),
       ),
       textDirection: TextDirection.ltr,
     )..layout();
@@ -93,7 +97,11 @@ class _BurrowsPainter extends CustomPainter {
       ..color = Colors.white;
 
     const double r = 8.0; // raio do marcador
-    final tpStyle = TextStyle(color: Colors.white, fontSize: 10, fontWeight: FontWeight.bold);
+    final tpStyle = TextStyle(
+      color: Colors.white,
+      fontSize: 10,
+      fontWeight: FontWeight.bold,
+    );
     for (int i = 0; i < burrows.length; i++) {
       final p = Offset(burrows[i].dx * sx, burrows[i].dy * sy);
       canvas.drawCircle(p, r, fill);

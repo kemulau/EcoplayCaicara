@@ -3,7 +3,7 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 
 /// BookView
-/// 
+///
 /// Um widget que exibe páginas em pares (esquerda/direita)
 /// com visual de livro antigo e uma animação simples de virada
 /// ao paginar via swipe/arrasto. Cada item da lista [pages]
@@ -287,7 +287,7 @@ class _PaperPage extends StatelessWidget {
     required this.paperColor,
   });
 
-    // Conteúdo da página
+  // Conteúdo da página
   final Widget child;
   // Rotação em Y (radianos). Positivo = gira para trás em torno do lado direito.
   final double angleY;
@@ -340,10 +340,11 @@ class _PaperPage extends StatelessWidget {
               Padding(
                 padding: padding,
                 child: DefaultTextStyle(
-                  style: Theme.of(context)
-                          .textTheme
-                          .bodyLarge
-                          ?.copyWith(height: 1.35, color: Colors.brown.shade900) ??
+                  style:
+                      Theme.of(context).textTheme.bodyLarge?.copyWith(
+                        height: 1.35,
+                        color: Colors.brown.shade900,
+                      ) ??
                       TextStyle(height: 1.35, color: Colors.brown.shade900),
                   child: child,
                 ),

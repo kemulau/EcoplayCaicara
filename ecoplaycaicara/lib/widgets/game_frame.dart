@@ -1,8 +1,10 @@
 // lib/widgets/game_frame.dart
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'accessibility/panel.dart'; // [A11Y]
+import 'narrable.dart';
 import '../theme/game_chrome.dart';
-import 'a11y_panel.dart'; // [A11Y]
+import 'hud/title_capsule.dart';
 
 class _OpenA11yIntent extends Intent {
   const _OpenA11yIntent();
@@ -22,8 +24,8 @@ class GameScaffold extends StatelessWidget {
     this.mobileBackgroundAsset,
     this.mobileBreakpoint = 600,
     this.panelPadding,
-    this.showA11yButton = false,                 // [A11Y]
-    this.onOpenA11y,                             // [A11Y]
+    this.showA11yButton = false, // [A11Y]
+    this.onOpenA11y, // [A11Y]
   });
 
   final String title;
@@ -37,7 +39,7 @@ class GameScaffold extends StatelessWidget {
   final EdgeInsets? panelPadding;
 
   // [A11Y] controla botão no cabeçalho e callback para abrir painel
-  final bool showA11yButton;                     // [A11Y]
+  final bool showA11yButton; // [A11Y]
   final void Function(BuildContext context)? onOpenA11y; // [A11Y]
 
   @override
@@ -49,24 +51,19 @@ class GameScaffold extends StatelessWidget {
     // Max panel height when not filling on large screens (keeps look consistent vertically too).
     const double desktopPanelMaxHeight = 760.0;
     // Fundo padrão do app
-    const String defaultBackground = 'assets/images/background.png';
+    const String defaultBackground = 'assets/images/background-toca.png';
     // Escolhe o fundo considerando breakpoint para mobile
     final String chosenBackground =
         (screenWidth <= mobileBreakpoint && mobileBackgroundAsset != null)
-            ? mobileBackgroundAsset!
-            : (backgroundAsset ?? defaultBackground);
+        ? mobileBackgroundAsset!
+        : (backgroundAsset ?? defaultBackground);
 
     // Ajuste de decode para imagem de fundo proporcional à largura da tela
     final int bgCacheWidth = (screenWidth * media.devicePixelRatio).round();
 
     // [A11Y] função padrão para abrir painel (se o caller não fornecer)
     Future<void> _openA11y(BuildContext ctx) async {
-      await showModalBottomSheet(
-        context: ctx,
-        isScrollControlled: true,
-        useSafeArea: true,
-        builder: (_) => const A11yPanel(),
-      );
+      await showA11yPanelBottomSheet(ctx);
     }
 
     final openPanel = onOpenA11y ?? _openA11y;
@@ -91,8 +88,8 @@ class GameScaffold extends StatelessWidget {
                 final double maxW = hasRoomForDesktop
                     ? desktopPanelMaxWidth
                     : (constraints.maxWidth < desktopPanelMaxWidth
-                        ? constraints.maxWidth
-                        : desktopPanelMaxWidth);
+                          ? constraints.maxWidth
+                          : desktopPanelMaxWidth);
                 // Limita a altura do painel para evitar overflow em telas baixas.
                 final double maxPanelHeight = (constraints.maxHeight - 40)
                     .clamp(
@@ -103,10 +100,7 @@ class GameScaffold extends StatelessWidget {
                     )
                     .toDouble();
 
-                Widget panel = GamePanel(
-                  child: child,
-                  padding: panelPadding,
-                );
+                Widget panel = GamePanel(child: child, padding: panelPadding);
 
                 if (!fill) {
                   panel = ConstrainedBox(
@@ -121,12 +115,13 @@ class GameScaffold extends StatelessWidget {
                     padding: const EdgeInsets.all(16),
                     child: SafeArea(
                       child: Column(
-                        mainAxisSize:
-                            fill ? MainAxisSize.max : MainAxisSize.min,
+                        mainAxisSize: fill
+                            ? MainAxisSize.max
+                            : MainAxisSize.min,
                         children: [
                           _HeaderBar(
                             title: title,
-                            showA11yButton: showA11yButton,     // [A11Y]
+                            showA11yButton: showA11yButton, // [A11Y]
                             onOpenA11y: onOpenA11y ?? _openA11y, // [A11Y]
                           ),
                           const SizedBox(height: 8),
@@ -167,10 +162,7 @@ class GameScaffold extends StatelessWidget {
             },
           ),
         },
-        child: Focus(
-          autofocus: true,
-          child: scaffold,
-        ),
+        child: Focus(autofocus: true, child: scaffold),
       ),
     );
   }
@@ -188,17 +180,19 @@ class GamePanel extends StatelessWidget {
 
     return Container(
       decoration: BoxDecoration(
-        color: (chrome?.panelBackground ??
-                (Theme.of(context).brightness == Brightness.dark
-                    ? scheme.surface
-                    : scheme.background))
-            .withOpacity(0.86),
+        color:
+            (chrome?.panelBackground ??
+                    (Theme.of(context).brightness == Brightness.dark
+                        ? scheme.surface
+                        : scheme.background))
+                .withOpacity(0.86),
         borderRadius: BorderRadius.circular(chrome?.panelRadius ?? 18),
         border: Border.all(
           color: chrome?.panelBorder ?? scheme.onSurface.withOpacity(0.25),
-          width: 2,
+          width: chrome?.panelBorderWidth ?? 2,
         ),
-        boxShadow: chrome?.panelShadow ??
+        boxShadow:
+            chrome?.panelShadow ??
             [
               BoxShadow(
                 color: Colors.black.withOpacity(0.35),
@@ -223,19 +217,24 @@ class GameSectionTitle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-      decoration: BoxDecoration(
-        color: scheme.primary.withOpacity(0.12),
-        borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: scheme.primary.withOpacity(0.5), width: 1.5),
-      ),
-      child: Text(
-        text,
-        style: Theme.of(context)
-            .textTheme
-            .bodyMedium
-            ?.copyWith(fontWeight: FontWeight.bold),
+    return Narrable(
+      text: text,
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+        decoration: BoxDecoration(
+          color: scheme.primary.withOpacity(0.12),
+          borderRadius: BorderRadius.circular(8),
+          border: Border.all(
+            color: scheme.primary.withOpacity(0.5),
+            width: 1.5,
+          ),
+        ),
+        child: Text(
+          text,
+          style: Theme.of(
+            context,
+          ).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.bold),
+        ),
       ),
     );
   }
@@ -244,100 +243,93 @@ class GameSectionTitle extends StatelessWidget {
 class _HeaderBar extends StatelessWidget {
   const _HeaderBar({
     required this.title,
-    this.showA11yButton = false,                           // [A11Y]
-    this.onOpenA11y,                                       // [A11Y]
+    this.showA11yButton = false, // [A11Y]
+    this.onOpenA11y, // [A11Y]
   });
 
   final String title;
-  final bool showA11yButton;                               // [A11Y]
-  final void Function(BuildContext context)? onOpenA11y;    // [A11Y]
+  final bool showA11yButton; // [A11Y]
+  final void Function(BuildContext context)? onOpenA11y; // [A11Y]
 
   @override
   Widget build(BuildContext context) {
-    final scheme = Theme.of(context).colorScheme;
     final chrome = Theme.of(context).extension<GameChrome>();
-    // Quebra gentil do título em telas estreitas para evitar áreas vazias grandes
-    String finalTitle = title;
-    final width = MediaQuery.of(context).size.width;
-    if (width < 520 && title.contains(' ')) {
-      final parts = title.split(' ');
-      if (parts.length > 1) {
-        finalTitle =
-            parts.sublist(0, parts.length - 1).join(' ') + '\n' + parts.last;
-      }
+    final scheme = Theme.of(context).colorScheme;
+    final navigator = Navigator.of(context);
+    const double controlSlotWidth = 48;
+    Widget leadingSlot = SizedBox(width: controlSlotWidth);
+    if (navigator.canPop()) {
+      leadingSlot = SizedBox(
+        width: controlSlotWidth,
+        height: 48,
+        child: Narrable(
+          text: 'Voltar',
+          tooltip: 'Voltar',
+          child: Material(
+            color: scheme.primary,
+            borderRadius: BorderRadius.circular(32),
+            child: InkWell(
+              borderRadius: BorderRadius.circular(32),
+              onTap: () => navigator.maybePop(),
+              child: Center(
+                child: Icon(
+                  Icons.arrow_back_ios_new_rounded,
+                  color: scheme.onPrimary,
+                  size: 18,
+                ),
+              ),
+            ),
+          ),
+        ),
+      );
     }
-    final bool twoLines = finalTitle.contains('\n');
+
+    Widget? trailing;
+    if (showA11yButton) {
+      trailing = Narrable(
+        text: 'Abrir painel de acessibilidade',
+        tooltip: 'Acessibilidade',
+        child: IconButton(
+          tooltip: 'Acessibilidade',
+          onPressed: () => onOpenA11y?.call(context),
+          icon: const Icon(Icons.accessibility_new_rounded),
+          color: scheme.onPrimary,
+          splashRadius: 20,
+        ),
+      );
+    }
 
     return LayoutBuilder(
       builder: (context, constraints) {
-        // Limita a barra do título para acompanhar o bloco de conteúdo abaixo.
-        final available = constraints.maxWidth - 48; // margem lateral do painel
-        double maxHeader = available;
-        if (maxHeader > 420) maxHeader = 420; // teto compacto
-        if (maxHeader < 220) maxHeader = 220; // piso para caber o texto
-        return Center(
-          child: ConstrainedBox(
-            constraints: BoxConstraints(maxWidth: maxHeader),
-            child: Stack( // [A11Y] para suportar ícone sobreposto
-              children: [
-                Container(
-                  padding: EdgeInsets.symmetric(
-                      horizontal: 18, vertical: twoLines ? 12 : 10),
-                  decoration: BoxDecoration(
-                    borderRadius:
-                        BorderRadius.circular(chrome?.panelRadius ?? 16),
-                    gradient: LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      colors: [
-                        (chrome?.buttonGradientTop ??
-                            scheme.primary.withOpacity(0.92)),
-                        (chrome?.buttonGradientBottom ??
-                            scheme.primary.withOpacity(0.82)),
-                      ],
-                    ),
-                    boxShadow: chrome?.panelShadow ??
-                        [
-                          BoxShadow(
-                              color: Colors.black.withOpacity(0.28),
-                              blurRadius: 16,
-                              offset: const Offset(0, 7)),
-                          BoxShadow(
-                              color: Colors.white.withOpacity(0.08),
-                              blurRadius: 0,
-                              offset: const Offset(0, 1)),
-                        ],
-                  ),
-                  child: Center(
-                    child: Text(
-                      finalTitle,
-                      style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                            color: scheme.onPrimary,
-                            letterSpacing: 1.0,
-                          ),
-                      textAlign: TextAlign.center,
-                      maxLines: 2,
-                      softWrap: true,
-                    ),
-                  ),
-                ),
+        final double availableHeaderWidth =
+            (constraints.maxWidth - (controlSlotWidth * 2)).clamp(
+              0.0,
+              constraints.maxWidth,
+            );
+        final double maxHeader = availableHeaderWidth <= 160
+            ? availableHeaderWidth
+            : availableHeaderWidth.clamp(160.0, 420.0);
+        final double naturalMinWidth = (chrome?.panelRadius ?? 16) * 10;
+        final double resolvedMinWidth = maxHeader <= 220
+            ? maxHeader
+            : naturalMinWidth.clamp(220.0, maxHeader);
 
-                // [A11Y] Botão de acessibilidade opcional
-                if (showA11yButton)
-                  Positioned(
-                    right: 6,
-                    top: twoLines ? 6 : 4,
-                    child: IconButton(
-                      tooltip: 'Acessibilidade',
-                      onPressed: () => onOpenA11y?.call(context),
-                      icon: const Icon(Icons.accessibility_new_rounded),
-                      color: scheme.onPrimary,
-                      splashRadius: 20,
-                    ),
-                  ),
-              ],
+        return Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            leadingSlot,
+            Expanded(
+              child: Center(
+                child: TitleCapsule(
+                  text: title,
+                  maxWidth: maxHeader <= 0 ? 160 : maxHeader,
+                  minWidth: resolvedMinWidth > 0 ? resolvedMinWidth : 120,
+                  trailing: trailing,
+                ),
+              ),
             ),
-          ),
+            SizedBox(width: controlSlotWidth),
+          ],
         );
       },
     );

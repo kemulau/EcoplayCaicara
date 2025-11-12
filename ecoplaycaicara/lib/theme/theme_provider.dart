@@ -142,6 +142,13 @@ class ThemeProvider with ChangeNotifier {
     final seed = _seedForPalette(palette);
     var scheme = ColorScheme.fromSeed(seedColor: seed, brightness: brightness);
 
+    if (brightness == Brightness.dark) {
+      scheme = scheme.copyWith(
+        primary: const Color(0xFFC3601D),
+        onPrimary: Colors.white,
+      );
+    }
+
     if (highContrast) {
       final bg = brightness == Brightness.dark ? Colors.black : Colors.white;
       final onBg = brightness == Brightness.dark ? Colors.white : Colors.black;

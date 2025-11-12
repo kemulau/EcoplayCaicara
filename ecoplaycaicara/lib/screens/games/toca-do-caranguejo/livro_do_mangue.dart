@@ -559,13 +559,13 @@ class _LivroDoMangueScreenState extends State<LivroDoMangueScreen> {
                     ),
                   ],
                 ) ??
-                TextStyle(
-                  fontSize: isCompact ? 30 : (isMedium ? 34 : 38),
-                  fontWeight: FontWeight.w900,
-                  color: palette.ink,
-                  letterSpacing: 1.1,
-                  height: 1.02,
-                );
+            TextStyle(
+              fontSize: isCompact ? 30 : (isMedium ? 34 : 38),
+              fontWeight: FontWeight.w900,
+              color: palette.ink,
+              letterSpacing: 1.1,
+              height: 1.02,
+            );
 
         final subtitleStyle =
             theme.textTheme.titleMedium?.copyWith(
@@ -574,12 +574,12 @@ class _LivroDoMangueScreenState extends State<LivroDoMangueScreen> {
               height: 1.25,
               fontSize: isCompact ? 15 : 16,
             ) ??
-                TextStyle(
-                  color: palette.inkMuted,
-                  letterSpacing: 0.4,
-                  height: 1.25,
-                  fontSize: isCompact ? 15 : 16,
-                );
+            TextStyle(
+              color: palette.inkMuted,
+              letterSpacing: 0.4,
+              height: 1.25,
+              fontSize: isCompact ? 15 : 16,
+            );
 
         return GestureDetector(
           onTap: () => _goTo(_pgMenu),
@@ -620,11 +620,11 @@ class _LivroDoMangueScreenState extends State<LivroDoMangueScreen> {
                               letterSpacing: 1.0,
                               fontWeight: FontWeight.w800,
                             ) ??
-                                TextStyle(
-                                  color: palette.badgeFill,
-                                  letterSpacing: 1.0,
-                                  fontWeight: FontWeight.w800,
-                                ),
+                            TextStyle(
+                              color: palette.badgeFill,
+                              letterSpacing: 1.0,
+                              fontWeight: FontWeight.w800,
+                            ),
                       ),
                     ),
                   ),
@@ -702,10 +702,10 @@ class _LivroDoMangueScreenState extends State<LivroDoMangueScreen> {
                                     color: palette.inkMuted,
                                     letterSpacing: 0.2,
                                   ) ??
-                                      TextStyle(
-                                        color: palette.inkMuted,
-                                        letterSpacing: 0.2,
-                                      ),
+                                  TextStyle(
+                                    color: palette.inkMuted,
+                                    letterSpacing: 0.2,
+                                  ),
                             ),
                             SizedBox(height: (isCompact ? 14.0 : 20.0)),
                             Wrap(
@@ -735,10 +735,10 @@ class _LivroDoMangueScreenState extends State<LivroDoMangueScreen> {
                                             color: Colors.white,
                                             fontWeight: FontWeight.w800,
                                           ) ??
-                                              TextStyle(
-                                                color: Colors.white,
-                                                fontWeight: FontWeight.w800,
-                                              ),
+                                          TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.w800,
+                                          ),
                                     ),
                                   ),
                                 ),
@@ -772,11 +772,11 @@ class _LivroDoMangueScreenState extends State<LivroDoMangueScreen> {
                                             fontWeight: FontWeight.w700,
                                             letterSpacing: 0.6,
                                           ) ??
-                                              TextStyle(
-                                                color: palette.badgeText,
-                                                fontWeight: FontWeight.w700,
-                                                letterSpacing: 0.6,
-                                              ),
+                                          TextStyle(
+                                            color: palette.badgeText,
+                                            fontWeight: FontWeight.w700,
+                                            letterSpacing: 0.6,
+                                          ),
                                     ),
                                   ),
                                 ),
@@ -1036,7 +1036,9 @@ class _LivroDoMangueScreenState extends State<LivroDoMangueScreen> {
                   ),
                   border: Border.all(
                     color:
-                        (imagemHasFrame ? palette.cardOutline : palette.paperEdge)
+                        (imagemHasFrame
+                                ? palette.cardOutline
+                                : palette.paperEdge)
                             .withOpacity(imagemHasFrame ? 0.7 : 0.45),
                     width: imagemHasFrame ? 2.6 : 1.4,
                   ),
@@ -1116,7 +1118,8 @@ class _LivroDoMangueScreenState extends State<LivroDoMangueScreen> {
                     Expanded(
                       child: Text(
                         text,
-                        style: theme.textTheme.bodyLarge?.copyWith(
+                        style:
+                            theme.textTheme.bodyLarge?.copyWith(
                               height: 1.45,
                               color: palette.ink,
                             ) ??
@@ -1155,15 +1158,19 @@ class _LivroDoMangueScreenState extends State<LivroDoMangueScreen> {
               ),
               child: LayoutBuilder(
                 builder: (context, box) {
-                  final double maxBulletHeight =
-                      math.max(120.0, (box.maxHeight.isFinite ? box.maxHeight : 280) - 48);
+                  final double maxBulletHeight = math.max(
+                    120.0,
+                    (box.maxHeight.isFinite ? box.maxHeight : 280) - 48,
+                  );
 
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Expanded(
                         child: ConstrainedBox(
-                          constraints: BoxConstraints(maxHeight: maxBulletHeight),
+                          constraints: BoxConstraints(
+                            maxHeight: maxBulletHeight,
+                          ),
                           child: SingleChildScrollView(
                             padding: EdgeInsets.zero,
                             physics: const BouncingScrollPhysics(),
@@ -1221,7 +1228,8 @@ class _LivroDoMangueScreenState extends State<LivroDoMangueScreen> {
                     Expanded(
                       child: Text(
                         text,
-                        style: theme.textTheme.bodyLarge?.copyWith(
+                        style:
+                            theme.textTheme.bodyLarge?.copyWith(
                               height: 1.45,
                               color: palette.ink,
                             ) ??
@@ -1295,7 +1303,8 @@ class _LivroDoMangueScreenState extends State<LivroDoMangueScreen> {
             Text(
               titulo,
               textAlign: isWide ? TextAlign.left : TextAlign.center,
-              style: theme.textTheme.headlineSmall?.copyWith(
+              style:
+                  theme.textTheme.headlineSmall?.copyWith(
                     fontWeight: FontWeight.w900,
                     letterSpacing: 0.6,
                     color: palette.ink,
@@ -1312,21 +1321,16 @@ class _LivroDoMangueScreenState extends State<LivroDoMangueScreen> {
               Text(
                 subtitulo,
                 textAlign: isWide ? TextAlign.left : TextAlign.center,
-                style: theme.textTheme.titleMedium?.copyWith(
+                style:
+                    theme.textTheme.titleMedium?.copyWith(
                       color: palette.inkMuted,
                       letterSpacing: 0.2,
                     ) ??
-                    TextStyle(
-                      color: palette.inkMuted,
-                      letterSpacing: 0.2,
-                    ),
+                    TextStyle(color: palette.inkMuted, letterSpacing: 0.2),
               ),
             ],
             SizedBox(height: gap),
-            if (imagePanel != null) ...[
-              imagePanel,
-              SizedBox(height: gap),
-            ],
+            if (imagePanel != null) ...[imagePanel, SizedBox(height: gap)],
             buildTextPanelNoInnerScroll(),
           ];
 
@@ -1340,8 +1344,9 @@ class _LivroDoMangueScreenState extends State<LivroDoMangueScreen> {
                 bottomPadding,
               ),
               child: Column(
-                crossAxisAlignment:
-                    isWide ? CrossAxisAlignment.start : CrossAxisAlignment.center,
+                crossAxisAlignment: isWide
+                    ? CrossAxisAlignment.start
+                    : CrossAxisAlignment.center,
                 children: contentColumnChildren,
               ),
             ),
@@ -1397,13 +1402,15 @@ class _LivroDoMangueScreenState extends State<LivroDoMangueScreen> {
               bottomPadding,
             ),
             child: Column(
-              crossAxisAlignment:
-                  isWide ? CrossAxisAlignment.start : CrossAxisAlignment.center,
+              crossAxisAlignment: isWide
+                  ? CrossAxisAlignment.start
+                  : CrossAxisAlignment.center,
               children: [
                 Text(
                   titulo,
                   textAlign: isWide ? TextAlign.left : TextAlign.center,
-                  style: theme.textTheme.headlineSmall?.copyWith(
+                  style:
+                      theme.textTheme.headlineSmall?.copyWith(
                         fontWeight: FontWeight.w900,
                         letterSpacing: 0.6,
                         color: palette.ink,
@@ -1420,7 +1427,8 @@ class _LivroDoMangueScreenState extends State<LivroDoMangueScreen> {
                   Text(
                     subtitulo,
                     textAlign: isWide ? TextAlign.left : TextAlign.center,
-                    style: theme.textTheme.titleMedium?.copyWith(
+                    style:
+                        theme.textTheme.titleMedium?.copyWith(
                           color: palette.inkMuted,
                           letterSpacing: 0.2,
                         ) ??
@@ -1531,11 +1539,11 @@ class _LivroDoMangueScreenState extends State<LivroDoMangueScreen> {
                                   fit: coverFit,
                                   errorBuilder: (_, __, ___) =>
                                       fallbackAsset != null
-                                          ? Image.asset(
-                                              fallbackAsset,
-                                              fit: BoxFit.contain,
-                                            )
-                                          : const SizedBox.shrink(),
+                                      ? Image.asset(
+                                          fallbackAsset,
+                                          fit: BoxFit.contain,
+                                        )
+                                      : const SizedBox.shrink(),
                                 ),
                               ),
                             ),

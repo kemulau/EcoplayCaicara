@@ -1,14 +1,14 @@
 // lib/screens/games/toca-do-caranguejo/tutorial.dart
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:provider/provider.dart';                 // <-- provider
+import 'package:provider/provider.dart'; // <-- provider
 import '../../../widgets/pixel_button.dart';
 import '../../../widgets/game_frame.dart';
 import '../../../widgets/typing_text.dart';
 import '../../../audio/typing_loop_sfx.dart';
 import '../../../widgets/link_button.dart';
 import '../../../theme/game_styles.dart';
-import '../../../theme/theme_provider.dart';             // <-- ThemeProvider
+import '../../../theme/theme_provider.dart'; // <-- ThemeProvider
 import '../../../services/user_prefs.dart';
 import 'game.dart' deferred as game;
 
@@ -83,7 +83,9 @@ class _TocaTutorialScreenState extends State<TocaTutorialScreen>
     final pos = _scrollController.position;
     final step = pos.viewportDimension * 0.8;
     final target = (pos.pixels + step).clamp(0.0, pos.maxScrollExtent);
-    final reduceMotion = context.read<ThemeProvider>().reduceMotion;  // <-- provider ok
+    final reduceMotion = context
+        .read<ThemeProvider>()
+        .reduceMotion; // <-- provider ok
     await _scrollController.animateTo(
       target,
       duration: Duration(milliseconds: reduceMotion ? 160 : 300),
@@ -94,7 +96,9 @@ class _TocaTutorialScreenState extends State<TocaTutorialScreen>
 
   Future<void> _scrollToBottom() async {
     if (!_scrollController.hasClients) return;
-    final reduceMotion = context.read<ThemeProvider>().reduceMotion;  // <-- provider ok
+    final reduceMotion = context
+        .read<ThemeProvider>()
+        .reduceMotion; // <-- provider ok
     await _scrollController.animateTo(
       _scrollController.position.maxScrollExtent,
       duration: Duration(milliseconds: reduceMotion ? 180 : 350),
@@ -106,7 +110,9 @@ class _TocaTutorialScreenState extends State<TocaTutorialScreen>
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final reduceMotion = context.watch<ThemeProvider>().reduceMotion; // <-- provider ok
+    final reduceMotion = context
+        .watch<ThemeProvider>()
+        .reduceMotion; // <-- provider ok
     final styles = theme.extension<GameStyles>();
 
     final List<String> paragraphs = [
@@ -298,6 +304,19 @@ class _TocaTutorialScreenState extends State<TocaTutorialScreen>
                                 ),
                         ),
                       const SizedBox(height: 20),
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: IconButton(
+                          tooltip: 'Voltar ao início',
+                          icon: const Icon(
+                            Icons.home_rounded,
+                            color: Colors.brown,
+                          ),
+                          iconSize: 28,
+                          onPressed: () => Navigator.pop(context),
+                        ),
+                      ),
+                      const SizedBox(height: 20),
                     ],
                   ),
                 ),
@@ -329,10 +348,9 @@ class _TocaTutorialScreenState extends State<TocaTutorialScreen>
                               ),
                               child: Icon(
                                 Icons.keyboard_arrow_down_rounded,
-                                color: Theme.of(context)
-                                    .colorScheme
-                                    .primary
-                                    .withOpacity(0.95),
+                                color: Theme.of(
+                                  context,
+                                ).colorScheme.primary.withOpacity(0.95),
                                 size: 20,
                               ),
                             ),
