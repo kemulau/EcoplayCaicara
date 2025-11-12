@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:ecoplaycaicara/screens/games/toca-do-caranguejo/game.dart';
+import 'package:ecoplaycaicara/screens/games/toca-do-caranguejo/start.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -83,7 +84,7 @@ class EcoplayCaicaraApp extends StatelessWidget {
             child: child!,
           );
         },
-        home: const TocaGameScreen(),
+        home: const TocaStartScreen(),
       ),
     );
   }
