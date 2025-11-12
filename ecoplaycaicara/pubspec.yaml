@@ -36,11 +36,10 @@ flutter:
   uses-material-design: true
 
   assets:
-    - assets/images/
+    - assets/images/  
     - assets/avatares/
     - assets/cards/
     - assets/games/toca-do-caranguejo/
-    - assets/games/missao-reciclagem/
     - assets/audio/
   
   fonts:

@@ -3,9 +3,9 @@ const MANIFEST = 'flutter-app-manifest';
 const TEMP = 'flutter-temp-cache';
 const CACHE_NAME = 'flutter-app-cache';
 
-const RESOURCES = {"assets/AssetManifest.bin": "d31608c74c49e9fe85e2cb5e575c529a",
-"assets/AssetManifest.bin.json": "de15e1419660d99be37c96d7648dd7c1",
-"assets/AssetManifest.json": "c42853a13ebf3f02ed594b3c28380a36",
+const RESOURCES = {"assets/AssetManifest.bin": "337df91c9e2d2ec4d5b645960a934c5d",
+"assets/AssetManifest.bin.json": "160bf04e8fb40f887cc09e1b127c562f",
+"assets/AssetManifest.json": "149c9c5eedb64f005a01f77bec663165",
 "assets/assets/audio/+fimdejogo.mp3": "6d7849108cf131c736685830cfc6a567",
 "assets/assets/audio/-fimdejogo.mp3": "22be1c1377beac5cfe5540dfa7832431",
 "assets/assets/audio/negative-point.mp3": "eae0cfc6c4ba663cc82bcb5f29c87bc0",
@@ -53,6 +53,7 @@ const RESOURCES = {"assets/AssetManifest.bin": "d31608c74c49e9fe85e2cb5e575c529a
 "assets/assets/games/toca-do-caranguejo/residuo-isopor-boiando.png": "1260c474a506a98b30cfa328aee02303",
 "assets/assets/games/toca-do-caranguejo/residuo-madeira-musgo.png": "ccd9ebc5b9d6e05fb23bc1dcfb2ff19a",
 "assets/assets/games/toca-do-caranguejo/sacola-submersa.png": "e56912a2ec00e0e622dfb83ee09f2218",
+"assets/assets/images/acertou.png": "38395ca83545972490c788b6422dafae",
 "assets/assets/images/background-toca-mobile.png": "0b4396b03e98e6d674a9655d7c32a7da",
 "assets/assets/images/background-toca.png": "bcd49511a1d498b648ed3d9343b9df53",
 "assets/assets/images/background.png": "1b5ae2d47f63882316988658c7410c5b",
@@ -75,7 +76,7 @@ const RESOURCES = {"assets/AssetManifest.bin": "d31608c74c49e9fe85e2cb5e575c529a
 "canvaskit/skwasm_heavy.wasm": "8034ad26ba2485dab2fd49bdd786837b",
 "favicon.png": "5dcef449791fa27946b3d35ad8803796",
 "flutter.js": "888483df48293866f9f41d3d9274a779",
-"flutter_bootstrap.js": "a4a3c5ae9895c1ca84ad9af182d71d02",
+"flutter_bootstrap.js": "3bc23a37f42ba425fd46cc4a50bb65ea",
 "icons/Icon-192.png": "ac9a721a12bbc803b44f645561ecb1e1",
 "icons/Icon-512.png": "96e752610906ba2a93c65f8abe1645f1",
 "icons/Icon-maskable-192.png": "c457ef57daa1d16f64b27b786ec2ea3c",
