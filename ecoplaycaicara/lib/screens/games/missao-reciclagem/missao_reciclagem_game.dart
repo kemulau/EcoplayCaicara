@@ -92,7 +92,7 @@ class MissaoReciclagemGame extends FlameGame
   // ======= Assets dos itens/lixeiras =======
   static const Map<ItemType, List<String>> _itemAssets = <ItemType, List<String>>{
     ItemType.papel: <String>['games/missao-reciclagem/papelao.png'],
-    ItemType.metal: <String>['games/missao-reciclagem/Latinha (2).png'],
+    ItemType.metal: <String>['games/missao-reciclagem/latinha.png'],
     ItemType.vidro: <String>['games/missao-reciclagem/garrafa-vidro.png'],
     ItemType.plastico: <String>['games/missao-reciclagem/garrafa-pet.png'],
     ItemType.organico: <String>['games/missao-reciclagem/casca-banana.png'],
@@ -141,7 +141,7 @@ class MissaoReciclagemGame extends FlameGame
     'games/missao-reciclagem/vidro.png',
     'games/missao-reciclagem/organico.png',
     'games/missao-reciclagem/papelao.png',
-    'games/missao-reciclagem/Latinha (2).png',
+    'games/missao-reciclagem/latinha.png',
     'games/missao-reciclagem/garrafa-vidro.png',
     'games/missao-reciclagem/garrafa-pet.png',
     'games/missao-reciclagem/casca-banana.png',

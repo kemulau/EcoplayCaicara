@@ -30,7 +30,7 @@ class AssetCache {
     'games/missao-reciclagem/papelao.png',
     'games/missao-reciclagem/garrafa-pet.png',
     'games/missao-reciclagem/garrafa-vidro.png',
-    'games/missao-reciclagem/Latinha (2).png',
+    'games/missao-reciclagem/latinha.png',
     'games/missao-reciclagem/casca-banana.png',
     'games/missao-reciclagem/papel.png',
     'games/missao-reciclagem/plastico.png',

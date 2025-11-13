@@ -84,7 +84,7 @@ class EcoplayCaicaraApp extends StatelessWidget {
             child: child!,
           );
         },
-        home: const TocaStartScreen(),
+        home: const HomeScreen(),
       ),
     );
   }

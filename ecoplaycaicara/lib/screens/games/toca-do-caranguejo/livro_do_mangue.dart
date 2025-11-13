@@ -312,6 +312,15 @@ class _LivroDoMangueScreenState extends State<LivroDoMangueScreen> {
             child: Image.asset(backgroundAsset, fit: BoxFit.cover),
           ),
           SafeArea(
+            child: Align(
+              alignment: Alignment.topLeft,
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(12, 10, 0, 0),
+                child: _BackButton(onPressed: () => Navigator.of(context).maybePop()),
+              ),
+            ),
+          ),
+          SafeArea(
             child: LayoutBuilder(
               builder: (context, cons) {
                 final maxW = cons.maxWidth * 0.995;
@@ -1582,6 +1591,29 @@ class _LivroDoMangueScreenState extends State<LivroDoMangueScreen> {
             ),
           );
         },
+      ),
+    );
+  }
+
+  Widget _BackButton({required VoidCallback onPressed}) {
+    return Semantics(
+      button: true,
+      label: 'Voltar',
+      child: Material(
+        color: Colors.black.withOpacity(0.35),
+        borderRadius: BorderRadius.circular(999),
+        child: InkWell(
+          borderRadius: BorderRadius.circular(999),
+          onTap: onPressed,
+          child: const Padding(
+            padding: EdgeInsets.all(8.0),
+            child: Icon(
+              Icons.arrow_back_rounded,
+              color: Colors.white,
+              size: 28,
+            ),
+          ),
+        ),
       ),
     );
   }

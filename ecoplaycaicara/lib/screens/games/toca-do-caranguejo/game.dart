@@ -145,6 +145,113 @@ class _HudOverlay extends StatelessWidget {
   }
   // [A11Y] fim
 
+  // Confirmação de reinício (mesmo modal visual do Missão Reciclagem)
+  Future<void> _confirmRestart(BuildContext context, CrabGame game) async {
+    // Pausa o jogo enquanto o diálogo está aberto
+    game.pauseEngine();
+
+    final bool? confirmed = await showDialog<bool>(
+      context: context,
+      barrierDismissible: false,
+      builder: (dialogContext) {
+        final double dialogMaxWidth = math.min(
+          MediaQuery.of(dialogContext).size.width * 0.85,
+          420,
+        );
+        final theme = Theme.of(dialogContext);
+        final bool isDark = theme.brightness == Brightness.dark;
+        final Color surface =
+            isDark ? const Color(0xFF21140C).withOpacity(0.96) : Colors.white.withOpacity(0.98);
+        final Color borderColor = isDark ? const Color(0xFF9F6630) : const Color(0xFF7A4B1D);
+        final Color titleColor = isDark ? const Color(0xFFEAD0AE) : const Color(0xFF3A2516);
+        final Color bodyColor = isDark ? const Color(0xFFCBA57F) : const Color(0xFF5F4025);
+        final Color shadowColor =
+            isDark ? Colors.black.withOpacity(0.65) : Colors.black.withOpacity(0.45);
+
+        return Dialog(
+          backgroundColor: Colors.transparent,
+          insetPadding: const EdgeInsets.symmetric(horizontal: 32, vertical: 24),
+          child: ConstrainedBox(
+            constraints: BoxConstraints(maxWidth: dialogMaxWidth),
+            child: Container(
+              decoration: BoxDecoration(
+                color: surface,
+                borderRadius: BorderRadius.circular(20),
+                border: Border.all(color: borderColor, width: 3),
+                boxShadow: [
+                  BoxShadow(
+                    color: shadowColor,
+                    blurRadius: 18,
+                    offset: const Offset(0, 14),
+                  ),
+                ],
+              ),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      'Reiniciar rodada?',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w800,
+                        color: titleColor,
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    Text(
+                      'Tem certeza de que deseja reiniciar agora? Você perderá o progresso desta rodada.',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 14,
+                        height: 1.36,
+                        color: bodyColor,
+                      ),
+                    ),
+                    const SizedBox(height: 24),
+                    PixelButton(
+                      label: 'REINICIAR',
+                      icon: Icons.refresh_rounded,
+                      width: 200,
+                      height: 48,
+                      onPressed: () => Navigator.of(dialogContext).pop(true),
+                    ),
+                    const SizedBox(height: 12),
+                    TextButton(
+                      onPressed: () => Navigator.of(dialogContext).pop(false),
+                      child: Text(
+                        'Cancelar',
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w600,
+                          color: bodyColor,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        );
+      },
+    );
+
+    if (confirmed == true) {
+      // Reinicia recriando a tela, mantendo o comportamento atual
+      // (reset completo e retorno ao StartGate ao entrar).
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (_) => const TocaGameScreen()),
+      );
+    } else {
+      // Volta ao jogo
+      game.resumeEngine();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return SizedBox.expand(
@@ -237,14 +344,7 @@ class _HudOverlay extends StatelessWidget {
                                 // Recarregar
                                 _hudIconButton(
                                   icon: Icons.refresh_rounded,
-                                  onPressed: () {
-                                    Navigator.pushReplacement(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (_) => const TocaGameScreen(),
-                                      ),
-                                    );
-                                  },
+                                  onPressed: () => _confirmRestart(context, game),
                                 ),
 
                                 // Debug (somente dev)
@@ -313,15 +413,7 @@ class _HudOverlay extends StatelessWidget {
                                   // [A11Y] fim
                                   _hudIconButton(
                                     icon: Icons.refresh_rounded,
-                                    onPressed: () {
-                                      Navigator.pushReplacement(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (_) =>
-                                              const TocaGameScreen(),
-                                        ),
-                                      );
-                                    },
+                                    onPressed: () => _confirmRestart(context, game),
                                   ),
                                   if (kDebugMode)
                                     _hudIconButton(
