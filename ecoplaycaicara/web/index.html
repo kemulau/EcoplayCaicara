@@ -90,8 +90,6 @@
       const splash = document.getElementById('splash');
       const hide = () => { if (!splash.hasAttribute('hidden')) { splash.setAttribute('hidden', ''); setTimeout(() => splash.remove(), 400); } };
       window.addEventListener('flutter-first-frame', hide, { once: true });
-      // Safety: ensure we hide even if event never fires (e.g., cache/cdn hiccups)
-      setTimeout(hide, 20000);
     })();
   </script>
 
