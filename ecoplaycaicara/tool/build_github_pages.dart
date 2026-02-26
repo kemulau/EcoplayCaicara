@@ -63,6 +63,7 @@ Future<void> main(List<String> args) async {
     docsDir.deleteSync(recursive: true);
   }
   _copyDirectory(buildOutputDir, docsDir);
+  _verifyPublishedBundle(docsDir);
 
   final bootstrapPath =
       File('${docsDir.path}${Platform.pathSeparator}flutter_bootstrap.js');
@@ -90,20 +91,58 @@ Future<void> main(List<String> args) async {
 }
 
 void _copyDirectory(Directory source, Directory target) {
-  for (final entity in source.listSync(recursive: true)) {
-    final relativeUri = entity.uri.path.substring(source.uri.path.length);
-    if (relativeUri.isEmpty) {
+  final sourcePath = source.absolute.path;
+  for (final entity in source.listSync(recursive: true, followLinks: false)) {
+    final entityPath = entity.absolute.path;
+    if (!entityPath.startsWith(sourcePath)) {
       continue;
     }
-    final newUri = target.uri.resolve(relativeUri);
+    var relativePath = entityPath.substring(sourcePath.length);
+    relativePath = relativePath.replaceFirst(RegExp(r'^[\\/]+'), '');
+    if (relativePath.isEmpty) {
+      continue;
+    }
+    final newPath = '${target.path}${Platform.pathSeparator}$relativePath';
     if (entity is Directory) {
-      Directory.fromUri(newUri).createSync(recursive: true);
+      Directory(newPath).createSync(recursive: true);
     } else if (entity is File) {
-      final file = File.fromUri(newUri);
+      final file = File(newPath);
       file.parent.createSync(recursive: true);
       entity.copySync(file.path);
     }
   }
+}
+
+void _verifyPublishedBundle(Directory docsDir) {
+  final requiredFiles = <String>[
+    'index.html',
+    'flutter_bootstrap.js',
+    'main.dart.js',
+    'assets/AssetManifest.json',
+    'assets/FontManifest.json',
+    'assets/fonts/MaterialIcons-Regular.otf',
+    'assets/packages/cupertino_icons/assets/CupertinoIcons.ttf',
+    'assets/assets/images/background.png',
+    'icons/Icon-192.png',
+  ];
+
+  final missing = <String>[];
+  for (final relativePath in requiredFiles) {
+    final fullPath = '${docsDir.path}${Platform.pathSeparator}$relativePath';
+    if (!File(fullPath).existsSync()) {
+      missing.add(relativePath);
+    }
+  }
+
+  if (missing.isEmpty) {
+    return;
+  }
+
+  stderr.writeln('Published bundle validation failed. Missing files:');
+  for (final path in missing) {
+    stderr.writeln(' - $path');
+  }
+  throw StateError('docs/ build is incomplete; aborting publish output.');
 }
 
 class _RunResult {
