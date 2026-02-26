@@ -37,33 +37,19 @@ Future<void> main(List<String> args) async {
     '/EcoplayCaicara/',
   ];
 
-  var buildResult = await _run(
+  final buildResult = await _run(
     'flutter',
-    [...baseArgs, '--web-renderer', 'html'],
+    baseArgs,
+    environment: {
+      'FLUTTER_WEB_RENDERER': 'html',
+      'FLUTTER_WEB_USE_SKIA': 'false',
+    },
     captureOutput: true,
   );
 
   if (buildResult.exitCode != 0) {
-    final combined = '${buildResult.stdout ?? ''}\n${buildResult.stderr ?? ''}';
-    if (combined.contains('--web-renderer')) {
-      stdout.writeln(
-        'Falling back to legacy flags (FLUTTER_WEB_USE_SKIA=false).',
-      );
-      buildResult = await _run(
-        'flutter',
-        baseArgs,
-        environment: {
-          'FLUTTER_WEB_RENDERER': 'html',
-          'FLUTTER_WEB_USE_SKIA': 'false',
-        },
-        captureOutput: true,
-      );
-    }
-
-    if (buildResult.exitCode != 0) {
-      exitCode = buildResult.exitCode;
-      return;
-    }
+    exitCode = buildResult.exitCode;
+    return;
   }
 
   if (!buildOutputDir.existsSync()) {

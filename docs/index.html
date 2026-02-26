@@ -89,7 +89,16 @@
     (function() {
       const splash = document.getElementById('splash');
       const hide = () => { if (!splash.hasAttribute('hidden')) { splash.setAttribute('hidden', ''); setTimeout(() => splash.remove(), 400); } };
-      window.addEventListener('flutter-first-frame', hide, { once: true });
+      const fallbackTimer = setTimeout(hide, 12000);
+      const resolveSplash = () => {
+        clearTimeout(fallbackTimer);
+        hide();
+      };
+      window.addEventListener('flutter-first-frame', resolveSplash, { once: true });
+      window.addEventListener('error', resolveSplash, { once: true });
+      window.addEventListener('unhandledrejection', resolveSplash, {
+        once: true,
+      });
     })();
   </script>
 

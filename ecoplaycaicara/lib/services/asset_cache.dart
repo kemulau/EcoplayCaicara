@@ -42,6 +42,8 @@ class AssetCache {
   static bool _configured = false;
   static bool _warmUpStarted = false;
   static Future<void>? _warmUpFuture;
+  static const Duration _warmUpTimeout = Duration(seconds: 12);
+  static const Duration _singleAssetTimeout = Duration(seconds: 4);
   static Map<String, dynamic>? _assetManifest;
   static Future<Map<String, dynamic>>? _manifestFuture;
   static const List<String> _imagePrefixes = <String>[
@@ -81,7 +83,10 @@ class AssetCache {
       ),
       CrabGame.preloadAssets(),
       MissaoReciclagemGame.preloadAssets(),
-    ]).catchError((_) {});
+    ])
+        .timeout(_warmUpTimeout, onTimeout: () => <void>[])
+        .then((_) {})
+        .catchError((_) {});
 
     await _warmUpFuture;
   }
@@ -132,7 +137,13 @@ class AssetCache {
       },
     );
     stream.addListener(listener);
-    return completer.future;
+    return completer.future.timeout(
+      _singleAssetTimeout,
+      onTimeout: () {
+        stream.removeListener(listener);
+        return false;
+      },
+    );
   }
 
   static Future<List<String>> _resolveBulkImageAssets() async {

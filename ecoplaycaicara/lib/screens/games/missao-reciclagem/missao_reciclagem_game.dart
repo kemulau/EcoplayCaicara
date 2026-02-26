@@ -115,7 +115,7 @@ class MissaoReciclagemGame extends FlameGame
     targetBlend: 11,
     snapDistance: 3,
   );
-  static const String _sfxClick = 'audio/click.mp3';
+  static const String _sfxClick = 'audio/page-flip-47177.mp3';
   static const String _sfxResiduo = 'audio/residuos-effect.wav';
   static const String _sfxPoint = 'audio/point-effect.wav';
   static const String _sfxNegative = 'audio/negative-point.mp3';

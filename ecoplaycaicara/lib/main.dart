@@ -28,10 +28,6 @@ Future<void> main() async {
         return true;
       };
 
-  // Inicia em modo visitante (sem sessão persistida).
-  await BackendClient.instance.clearSession();
-  await AssetCache.warmUp();
-
   runZonedGuarded<void>(
     () {
       runApp(
@@ -40,12 +36,30 @@ Future<void> main() async {
           child: const EcoplayCaicaraApp(),
         ),
       );
+      unawaited(_primeStartupTasks());
     },
     (Object error, StackTrace stack) {
       debugPrint('Uncaught zone error: ${error.runtimeType} - $error');
       debugPrintStack(stackTrace: stack);
     },
   );
+}
+
+Future<void> _primeStartupTasks() async {
+  // Evita bloquear o primeiro frame no web/Safari.
+  try {
+    await BackendClient.instance.clearSession();
+  } catch (error, stack) {
+    debugPrint('Startup clearSession falhou: $error');
+    debugPrintStack(stackTrace: stack);
+  }
+
+  try {
+    await AssetCache.warmUp().timeout(const Duration(seconds: 12));
+  } catch (error, stack) {
+    debugPrint('Startup warmUp falhou/timeout: $error');
+    debugPrintStack(stackTrace: stack);
+  }
 }
 
 class EcoplayCaicaraApp extends StatelessWidget {
